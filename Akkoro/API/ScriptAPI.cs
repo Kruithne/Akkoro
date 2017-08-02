@@ -41,7 +41,7 @@ namespace Akkoro
             return new ScriptTimer(_env, delay, chunk);
         }
 
-        public void SetStatus(string message)
+        public void Status(string message)
         {
             _control.SetStatusText(message);
         }

@@ -11,7 +11,7 @@ There are three timer functions: `Timer`, `After` and `Every`. The general princ
 ```Lua
 After(5000, function()
     -- This function will be invoked after five seconds.
-    SetStatus("Five seconds have passed!");
+    Status("Five seconds have passed!");
 end);
 ```
 
@@ -21,7 +21,7 @@ Above is an example of the simplest way to call a timer. The anonymous function 
 local i = 1;
 Every(5000, function()
     -- This function will be invoked every five seconds.
-    SetStatus("Iteration " .. i);
+    Status("Iteration " .. i);
     i = i + 1;
 end);
 ```
@@ -39,7 +39,7 @@ The next example will demonstrate the `Timer` function, as well as usage of the 
 
 ```Lua
 local myTimer = Timer(5000, function()
-    SetStatus("This function will never be used!");
+    Status("This function will never be used!");
 end);
 
 -- Timers created using the `Timer` function are not
@@ -47,7 +47,7 @@ end);
 
 myTimer:SetDelay(1000); -- Change delay to 1 second.
 myTimer:SetFunction(function()
-    SetStatus("This function was used!");
+    Status("This function was used!");
     myTimer:Stop();
 end);
 
@@ -58,7 +58,7 @@ myTimer:StartRepeating();
 
 ## Global API Function List
 
-#### SetStatus(`string` message)
+#### Status(`string` message)
 Set the status message which appears beside the script name on the listing UI.
 
 #### Hook(`string` event, `function` handler)
