@@ -73,7 +73,7 @@ Create a timer which will invoke the provided `callback` function in intervals o
 #### Every(`number` delay, `function` callback) : `userdata` timerRef
 Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). By default, timers created with this function will start automatically and repeat until stopped. See the **Timer** section under **Examples** for usage.
 
-#### GetMousePosition() : `number` x, `number` y
+#### GetCursorPosition() : `number` x, `number` y
 Returns the current X, Y location of the mouse cursor on the screen.
 
 ## Hook Events
