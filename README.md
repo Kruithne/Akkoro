@@ -15,7 +15,7 @@ After(5000, function()
 end);
 ```
 
-Above is an example of the simplest way to call a timer. The anonymous function provided will be invoked after five seconds, but only once. If we want the function to be *repeatedly* every five seconds, we would use the `Every` instead.
+Above is an example of the simplest way to call a timer. The anonymous function provided will be invoked after five seconds, but only once. If we want the function to be *repeatedly* invoked every five seconds, we would use the `Every` function instead.
 
 ```Lua
 local i = 1;
@@ -25,7 +25,7 @@ Every(5000, function()
     i = i + 1;
 end);
 ```
-While useful, calling the function like this gives us no way to stop the iteration without ending the script. For this reason, all three timer functions return a reference we can use to manipulate the running timer. The table below outlines the functions available from the reference.
+While useful, calling the function like this gives us no way to stop the iteration without ending the script. For this reason, all three timer functions return a reference we can use to manipulate the running timer. The table below outlines the structure of these references.
 
 | Function | Parameters | Description |
 | -------- | ---------- | ----------- |
@@ -35,7 +35,7 @@ While useful, calling the function like this gives us no way to stop the iterati
 | SetDelay | delay `number` | Set the interval delay.
 | SetFunction | callback `function` | Set the callback function. |
 
-The next example will demonstrate usage of the `Timer` function, as well as usage of the reference returned from the function. It's useful to remember that all three functions (`Timer`, `After`, and `Every`) return a reference, not just `Timer` as shown in the example.
+The next example will demonstrate the `Timer` function, as well as usage of the reference returned from the function. It's useful to remember that all three functions (`Timer`, `After`, and `Every`) return a reference, not just `Timer` as shown in the example.
 
 ```Lua
 local myTimer = Timer(5000, function()
@@ -57,9 +57,6 @@ myTimer:StartRepeating();
 ```
 
 ## Global API Function List
-
-#### ShowError(`string` message)
-Triggers an error, displayed in an dialog box. Script execution is paused until the dialog box is closed.
 
 #### SetStatus(`string` message)
 Set the status message which appears beside the script name on the listing UI.

@@ -20,11 +20,6 @@ namespace Akkoro
             _control = control;
         }
 
-        public void ShowError(string message)
-        {
-            MessageBox.Show(message, "Akkoro Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         public ScriptTimer After(int delay, LuaFunction chunk)
         {
             ScriptTimer timer = Timer(delay, chunk);

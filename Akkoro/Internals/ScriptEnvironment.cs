@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
 using System.Timers;
+using System.Windows.Forms;
 using NLua;
 using NLua.Exceptions;
 
@@ -63,7 +64,7 @@ namespace Akkoro
             _hooks.Clear();
             _control.DisableScript();
             _control.SetStatusText("Error");
-            _api.ShowError(e.Message);
+            MessageBox.Show(e.Message, "Akkoro Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public void AddHook(string id, LuaFunction chunk)
