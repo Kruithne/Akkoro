@@ -30,7 +30,7 @@ namespace Akkoro
             while (_thread.IsAlive)
                 Thread.Sleep(500);
 
-            _control.SetInactive();
+            _control.DisableScript();
         }
     }
 }

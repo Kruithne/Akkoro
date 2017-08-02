@@ -126,7 +126,7 @@ namespace Akkoro
             _componentStatusText.InvokeIfRequired(c => { c.Text = text; });
         }
 
-        public void SetActive()
+        public void EnableScript()
         {
             IsActive = true;
             SetStatusText("Active");
@@ -134,26 +134,31 @@ namespace Akkoro
             _componentOperationButton.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_button_stop; });
         }
 
-        public void SetInactive()
+        public void DisableScript()
         {
-            _env = null;
-            _thread = null;
-
             IsActive = false;
             SetStatusText("Stopped");
             _componentStatus.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_backdrop; });
             _componentOperationButton.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_button_start; });
 
+            if (_env != null)
+                _env.Flush();
+
+            _env = null;
+            _thread = null;
+
             if (_disposing)
-                Dispose();
+                this.InvokeIfRequired(c => { c.Dispose(); });
         }
 
         private void BeginTermination()
         {
             SetStatusText("Stopping...");
 
-            if (_thread != null && _thread.IsAlive)
+            if (_thread != null)
                 new TerminationThread(_thread, this).Begin();
+            else
+                DisableScript();
         }
 
         private void OnOperationButtonClick(object sender, MouseEventArgs e)
