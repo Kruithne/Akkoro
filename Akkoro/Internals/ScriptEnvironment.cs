@@ -14,7 +14,7 @@ namespace Akkoro
 {
     public class ScriptEnvironment
     {
-        private static string[] Blacklist = { "luanet", "os", "package", "print" };
+        private static string[] Blacklist = { "luanet", "os", "package", "print", "import" };
 
         private Lua _state;
         private ScriptAPI _api;
