@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -53,6 +54,13 @@ namespace Akkoro
         public void Hook(string id, LuaFunction chunk)
         {
             _env.AddHook(id, chunk);
+        }
+
+        public int GetCursorPosition(out int y)
+        {
+            Point point = InteropsManager.CursorPosition;
+            y = point.Y;
+            return point.X;
         }
     }
 }

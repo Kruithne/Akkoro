@@ -63,6 +63,7 @@
     <Compile Include="Internals\LuaTimer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Internals\InteropsManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

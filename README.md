@@ -6,7 +6,7 @@ Akkoro provides automation scripting for sane people. Using scripts written in L
 
 ### Timers
 
-There are three timer functions: `Timer(delay, callback)`, `After(delay, callback)` and `Every(delay, callback)`. The general principle is that the provided `callback` function will be invoked after `delay` milliseconds. The execution of this principle varies between the functions.
+There are three timer functions: `Timer`, `After` and `Every`. The general principle is that the provided `callback` function will be invoked after `delay` milliseconds. The execution of this principle varies between the functions.
 
 ```Lua
 After(5000, function()
@@ -25,7 +25,7 @@ Every(5000, function()
     i = i + 1;
 end);
 ```
-While useful, calling the function like this gives us no way to stop the iteration without ending the script. Thankfully, all three timer functions return a reference we can use to manipulate the running timer.
+While useful, calling the function like this gives us no way to stop the iteration without ending the script. For this reason, all three timer functions return a reference we can use to manipulate the running timer. The table below outlines the functions available from the reference.
 
 | Function | Parameters | Description |
 | -------- | ---------- | ----------- |
@@ -58,16 +58,29 @@ myTimer:StartRepeating();
 
 ## Global API Function List
 
-| Function | Parameters | Description |
-| -------- | ---------- | ----------- |
-| ShowError | message (string) | Displays an error message. Script execution is paused until the dialog box is closed.
-| SetStatus | message (string) | Set the status message which appears beside the script name on the listing.
-| Hook | event (string), handler (function) | Hook a function for a specific event. See the Hooks section below.
-| Timer | delay (number), callback (function) | Create a timer object. Delay is in milliseconds. Does not start automatically. See Timer examples for usage.
-| After | delay (number), callback (function) | Invokes provided function after delay (in milliseconds). See Timer examples for usage.
-| Every | delay (number), callback (function) | Invokes provided function every delay (in milliseconds). See Timer examples for usage.
+#### ShowError(`string` message)
+Triggers an error, displayed in an dialog box. Script execution is paused until the dialog box is closed.
 
-## Hooks
+#### SetStatus(`string` message)
+Set the status message which appears beside the script name on the listing UI.
+
+#### Hook(`string` event, `function` handler)
+Register the given function to be invoked for a specific event. Check the **Hook Events** section for details on hookable events.
+
+#### Timer(`number` delay, `function` callback) : `userdata` timerRef
+Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created by this function do not start auotmatically. See the **Timer** section under **Examples** for usage.
+
+#### After(`number` delay, `function` callback) : `userdata` timerRef
+Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). By default, timers created with this function will start automatically after being created, and execute just once. See the **Timer** section under **Examples** for usage.
+
+#### Every(`number` delay, `function` callback) : `userdata` timerRef
+Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). By default, timers created with this function will start automatically and repeat until stopped. See the **Timer** section under **Examples** for usage.
+
+#### GetMousePosition() : `number` x, `number` y
+Returns the current X, Y location of the mouse cursor on the screen.
+
+## Hook Events
+The following table describes event which can be used with the `Hook` function.
 
 | Event | Parameters | Description |
 | ----- | ---------- | ----------- |
