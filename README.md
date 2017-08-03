@@ -57,3 +57,5 @@ timer:Start(); -- Start the timer, executing just once.
 ```
 
 As mentioned in the snippet above, once the timer is started it will only execute once. To achieve the repetitive behavior of the `Every` function, we simply call `StartRepeating` instead of `Start`.
+
+For more detailed information on the timer functions, see the API sections on [timers](API.md#api-timers) and [timer references](API.md#timer-ref).
