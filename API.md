@@ -25,12 +25,9 @@ Creates a timer which will invoke the provided `callback` function in intervals 
 
 See [Timer Examples](README.md#examples-timers) for usage and [Timer Reference](#timer-ref) for details on the returned reference.
 
-### <a name="api-cursor"></a> API: Cursor
+#### <a name="timer-ref"></a> Timer Reference
 
-#### GetCursorPosition() : `number` x, `number` y
-Returns the current X, Y location of the mouse cursor on the screen.
-
-## <a name="timer-ref"></a> Timer Reference
+The table below describes the functions available on references returned by timer functions.
 
 | Function | Parameters | Description |
 | -------- | ---------- | ----------- |
@@ -39,6 +36,11 @@ Returns the current X, Y location of the mouse cursor on the screen.
 | Stop | None | Stops the timer. |
 | SetDelay | delay `number` | Set the interval delay.
 | SetFunction | callback `function` | Set the callback function. |
+
+### <a name="api-cursor"></a> API: Cursor
+
+#### GetCursorPosition() : `number` x, `number` y
+Returns the current X, Y location of the mouse cursor on the screen.
 
 ## <a name="hooks"></a> Hook Events
 The following table describes event which can be used with the `Hook` function.
