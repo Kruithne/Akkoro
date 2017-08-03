@@ -2,83 +2,58 @@
 
 Akkoro provides automation scripting for sane people. Using scripts written in Lua and a sensible API, you can automate repetitive tasks such as peripheral input, pattern identification, and more.
 
-## Examples
+- Scripts are written in Lua (5.2), and use the `.lua` extension.
+- Multiple scripts can be loaded at the same time.
+- Each script is executed asynchronously in its own thread.
 
-### Timers
+A full [API Reference](API.md) should be included alongside this document.
 
-There are three timer functions: `Timer`, `After` and `Every`. The general principle is that the provided `callback` function will be invoked after `delay` milliseconds. The execution of this principle varies between the functions.
+## <a name="examples"></a> Examples
+
+### <a name="examples-timers"></a> Timers
+
+Timers can be created in a few different ways. The simplest method is to call `After`, providing a delay (in milliseconds) and a callback function.
 
 ```Lua
 After(5000, function()
-    -- This function will be invoked after five seconds.
     Status("Five seconds have passed!");
 end);
 ```
 
-Above is an example of the simplest way to call a timer. The anonymous function provided will be invoked after five seconds, but only once. If we want the function to be *repeatedly* invoked every five seconds, we would use the `Every` function instead.
+The above will execute the provided function after five seconds have passed. Another common use-case is to have a timer repeatedly invoke the given function. We can achieve this using the `Every` function.
 
 ```Lua
-local i = 1;
-Every(5000, function()
-    -- This function will be invoked every five seconds.
-    Status("Iteration " .. i);
-    i = i + 1;
+local count = 1;
+Every(1000, function()
+    Status("Count: " .. count);
+    count = count + 1;
 end);
 ```
-While useful, calling the function like this gives us no way to stop the iteration without ending the script. For this reason, all three timer functions return a reference we can use to manipulate the running timer. The table below outlines the structure of these references.
 
-| Function | Parameters | Description |
-| -------- | ---------- | ----------- |
-| Start | None | Starts the timer, running once. |
-| StartRepeating | None | Starts the timer, repeating until stopped. |
-| Stop | None | Stops the timer. |
-| SetDelay | delay `number` | Set the interval delay.
-| SetFunction | callback `function` | Set the callback function. |
-
-The next example will demonstrate the `Timer` function, as well as usage of the reference returned from the function. It's useful to remember that all three functions (`Timer`, `After`, and `Every`) return a reference, not just `Timer` as shown in the example.
+With that example, the function will be called every one second, incrementing the counter. While useful, the only way to stop this timer is to terminate the script. For this reason, all timer-creation functions return a reference we can use to manipulate the created timer.
 
 ```Lua
-local myTimer = Timer(5000, function()
-    Status("This function will never be used!");
+local count = 1;
+myTimer = Every(1000, function()
+    if count == 10 then
+        myTimer:Stop();
+    end
+
+    Status("Count: " .. count);
+    count = count + 1;
 end);
-
--- Timers created using the `Timer` function are not
--- automatically started, so our timer is not yet running.
-
-myTimer:SetDelay(1000); -- Change delay to 1 second.
-myTimer:SetFunction(function()
-    Status("This function was used!");
-    myTimer:Stop();
-end);
-
--- Here we start the timer repeating, but it only executes once
--- because the function we assigned above calls `Stop()`.
-myTimer:StartRepeating();
 ```
 
-## Global API Function List
+Similar to the example before it, a timer is created that invokes the given function every one second. The difference here is that once the counter reaches ten, the timer is manually stopped.
 
-#### Status(`string` message)
-Set the status message which appears beside the script name on the listing UI.
+It's not unlikely that we might want to create a timer that doesn't start straight away. To do this we can make use of the `Timer` function.
 
-#### Hook(`string` event, `function` handler)
-Register the given function to be invoked for a specific event. Check the **Hook Events** section for details on hookable events.
+```Lua
+local timer = Timer(2000, function()
+    Status("Two seconds have passed!");
+end);
 
-#### Timer(`number` delay, `function` callback) : `userdata` timerRef
-Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created by this function do not start auotmatically. See the **Timer** section under **Examples** for usage.
+timer:Start(); -- Start the timer, executing just once.
+```
 
-#### After(`number` delay, `function` callback) : `userdata` timerRef
-Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). By default, timers created with this function will start automatically after being created, and execute just once. See the **Timer** section under **Examples** for usage.
-
-#### Every(`number` delay, `function` callback) : `userdata` timerRef
-Create a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). By default, timers created with this function will start automatically and repeat until stopped. See the **Timer** section under **Examples** for usage.
-
-#### GetCursorPosition() : `number` x, `number` y
-Returns the current X, Y location of the mouse cursor on the screen.
-
-## Hook Events
-The following table describes event which can be used with the `Hook` function.
-
-| Event | Parameters | Description |
-| ----- | ---------- | ----------- |
-| SCRIPT_STOPPED | None | Script has been manually stopped (not invoked if stopped by an error).
+As mentioned in the snippet above, once the timer is started it will only execute once. To achieve the repetitive behavior of the `Every` function, we simply call `StartRepeating` instead of `Start`.
