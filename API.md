@@ -42,6 +42,9 @@ The table below describes the functions available on references returned by time
 #### GetCursorPosition() : `number` x, `number` y
 Returns the current X, Y location of the mouse cursor on the screen.
 
+#### SetCursorPosition(`number` x, `number` y)
+Set the current position of the cursor. The new cursor location is applied instantly, with no movement.
+
 ## <a name="hooks"></a> Hook Events
 The following table describes event which can be used with the `Hook` function.
 

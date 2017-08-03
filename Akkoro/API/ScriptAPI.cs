@@ -57,5 +57,10 @@ namespace Akkoro
             y = point.Y;
             return point.X;
         }
+
+        public void SetCursorPosition(int x, int y)
+        {
+            InteropsManager.SetCursorPos(x, y);
+        }
     }
 }
