@@ -67,5 +67,10 @@ namespace Akkoro
         {
             _env.StartCursorJourney(new CursorJourney(_env, x, y, speed));
         }
+
+        public void StopMovingCursor()
+        {
+            _env.TerminateCursorJourney();
+        }
     }
 }

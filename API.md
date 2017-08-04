@@ -48,6 +48,9 @@ Set the current position of the cursor. The new cursor location is applied insta
 #### MoveCursor(`number` x, `number` y, `number` speed, `function` callback)
 Move the cursor in a path from its current location to the `x`, `y` location provided. Once the path is completed, `callback` will be invoked if provided. If omitted, `speed` will default to the value of `1`.
 
+#### StopMovingCursor()
+Stops any cursor motion currently being caused by a `MoveCursor` call.
+
 ## <a name="hooks"></a> Hook Events
 The following table describes event which can be used with the `Hook` function.
 
