@@ -17,5 +17,9 @@ namespace Akkoro
 
         [DllImport("User32.dll")]
         public static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+        public static void SendMouseEvent(uint mouseEvent) { mouse_event(mouseEvent, 0, 0, 0, 0); }
     }
 }

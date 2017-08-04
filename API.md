@@ -8,6 +8,9 @@ Set the status message for this script. A scripts status appears on the right si
 #### Hook(`string` event, `function` handler)
 Register the given function to be invoked for a specific event. Check the [Hook Events](#hooks) table for an overview of available events.
 
+#### Stop()
+Terminates and deactives the script.
+
 #### SetScriptName(`string` name)
 Set the name of this script, as seen on the script listing UI. By default, the filename of the script will be used unless this is called.
 
@@ -55,6 +58,21 @@ Note: This function operates asynchronously, and thus is non-blocking. In order 
 
 #### StopMovingCursor()
 Stops any cursor motion currently being caused by a `MoveCursor` call.
+
+#### Click(`number` type, `number` delay)
+Invoke a click at the current cursor location. Both arguments to this function are optional, and if called without them will produce a simple left-click.
+
+The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
+
+Using the `delay` argument, the period at which the cursor is considered *down* during the click can be specified. There will be no delay if this argument is omitted.
+
+It's important to note that this call is not asynchronous and will block the script-thread if a delay is provided. If you need to continue execution, consider using `MouseDown`/`MouseUp` instead.
+
+#### MouseDown(`number` type)
+Sets the state of the given click-type to *down*. The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
+
+#### MouseUp(`number` type)
+Sets the state of the given click-type to *up*. The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
 
 ## <a name="hooks"></a> Hook Events
 The following table describes event which can be used with the `Hook` function.

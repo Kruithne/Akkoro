@@ -65,6 +65,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Internals\InteropsManager.cs" />
+    <Compile Include="Internals\MouseClickType.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

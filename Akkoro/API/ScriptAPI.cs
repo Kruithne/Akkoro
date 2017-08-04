@@ -82,5 +82,26 @@ namespace Akkoro
         {
             _control.BeginTermination();
         }
+
+        public void Click(int scriptID = 1, int delay = 0)
+        {
+            MouseClickType clickType = MouseClickType.GetByScriptID(scriptID);
+            if (clickType != null)
+                clickType.SendClick(delay);
+        }
+
+        public void MouseDown(int scriptID = 1)
+        {
+            MouseClickType clickType = MouseClickType.GetByScriptID(scriptID);
+            if (clickType != null)
+                clickType.SendDown();
+        }
+
+        public void MouseUp(int scriptID = 1)
+        {
+            MouseClickType clickType = MouseClickType.GetByScriptID(scriptID);
+            if (clickType != null)
+                clickType.SendUp();
+        }
     }
 }
