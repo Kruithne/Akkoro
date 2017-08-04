@@ -14,8 +14,6 @@ namespace Akkoro
 {
     public class ScriptEnvironment
     {
-        private static string[] Blacklist = { "luanet", "os", "package", "print", "import" };
-
         private Lua _state;
         private ScriptAPI _api;
         private Control_FlowListing _control;
@@ -112,9 +110,10 @@ namespace Akkoro
         {
             Lua state = new Lua();
 
-            // Remove unwanted things from global environment.
-            foreach (string badFunction in Blacklist)
-                state.DoString(badFunction + " = nil;");
+            // Inject environment set-up script.
+            Assembly asm = Assembly.GetExecutingAssembly();
+            using (StreamReader reader = new StreamReader(asm.GetManifestResourceStream("Akkoro.environment.lua")))
+                state.DoString(reader.ReadToEnd());
 
             // Inject API functions.
             foreach (MethodInfo method in typeof(ScriptAPI).GetMethods())
