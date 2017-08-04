@@ -46,6 +46,11 @@ namespace Akkoro
             _control.SetStatusText(message);
         }
 
+        public void SetScriptName(string name)
+        {
+            _control.SetScriptName(name);
+        }
+
         public void Hook(string id, LuaFunction chunk)
         {
             _env.AddHook(id, chunk);

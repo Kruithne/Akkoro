@@ -8,6 +8,9 @@ Set the status message for this script. A scripts status appears on the right si
 #### Hook(`string` event, `function` handler)
 Register the given function to be invoked for a specific event. Check the [Hook Events](#hooks) table for an overview of available events.
 
+#### SetScriptName(`string` name)
+Set the name of this script, as seen on the script listing UI. By default, the filename of the script will be used unless this is called.
+
 ## <a name="api-timers"></a> API: Timers
 
 #### Timer(`number` delay, `function` callback) : `userdata` timerRef

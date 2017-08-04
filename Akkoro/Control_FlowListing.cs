@@ -121,6 +121,11 @@ namespace Akkoro
             Controls.Add(_componentTerminateButton);
         }
 
+        public void SetScriptName(string name)
+        {
+            _componentTitleText.InvokeIfRequired(c => { c.Text = name; });
+        }
+
         public void SetStatusText(string text)
         {
             _componentStatusText.InvokeIfRequired(c => { c.Text = text; });
