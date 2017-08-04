@@ -21,13 +21,15 @@ namespace Akkoro
 
         private Thread _thread;
         private LuaFunction _callback;
+        private ScriptEnvironment _env;
 
-        public CursorJourney(int destX, int destY, int speed = 1, LuaFunction callback = null)
+        public CursorJourney(ScriptEnvironment env, int destX, int destY, int speed = 1, LuaFunction callback = null)
         {
             _destX = destX;
             _destY = destY;
             _speed = speed;
             _callback = callback;
+            _env = env;
         }
 
         public void Start()
@@ -89,7 +91,7 @@ namespace Akkoro
 
             // Invoke callback
             if (_callback != null)
-                _callback.Call();
+                _env.SafeCall(_callback);
         }
     }
 }

@@ -47,16 +47,24 @@ namespace Akkoro
 
         public void TriggerEvent(string id, params object[] param)
         {
+            if (_hooks.ContainsKey(id))
+                foreach (LuaFunction chunk in _hooks[id])
+                    if (!SafeCall(chunk, param))
+                        return;
+        }
+
+        public bool SafeCall(LuaFunction chunk, params object[] param)
+        {
             try
             {
-                if (_hooks.ContainsKey(id))
-                    foreach (LuaFunction chunk in _hooks[id])
-                        chunk.Call(param);
+                chunk.Call(param);
+                return true;
             }
             catch (LuaScriptException e)
             {
                 OnScriptError(e);
             }
+            return false;
         }
 
         private void OnScriptError(LuaScriptException e)
@@ -114,14 +122,8 @@ namespace Akkoro
                 return;
             }
 
-            try
-            {
-                timer.Chunk.Call();
-            }
-            catch (LuaScriptException ex)
-            {
-                OnScriptError(ex);
-            }
+            if (!SafeCall(timer.Chunk))
+                timer.Stop();
 
             if (!timer.IsRepeating)
                 timer.Stop();
