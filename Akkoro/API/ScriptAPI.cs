@@ -62,5 +62,10 @@ namespace Akkoro
         {
             InteropsManager.SetCursorPos(x, y);
         }
+
+        public void MoveCursor(int x, int y, int speed = 1, LuaFunction callback = null)
+        {
+            new CursorJourney(x, y, speed).Start();
+        }
     }
 }

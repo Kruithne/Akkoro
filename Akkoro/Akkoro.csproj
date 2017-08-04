@@ -60,6 +60,7 @@
     <Compile Include="Control_FlowListing.Designer.cs">
       <DependentUpon>Control_FlowListing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Internals\CursorJourney.cs" />
     <Compile Include="Internals\LuaTimer.cs">
       <SubType>Component</SubType>
     </Compile>
