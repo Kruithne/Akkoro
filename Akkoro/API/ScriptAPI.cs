@@ -56,11 +56,11 @@ namespace Akkoro
             _env.AddHook(id, chunk);
         }
 
-        public int GetCursorPosition(out int y)
+        public void GetCursorPosition(out int x, out int y)
         {
             Point point = InteropsManager.CursorPosition;
+            x = point.X;
             y = point.Y;
-            return point.X;
         }
 
         public void SetCursorPosition(int x, int y)
@@ -76,6 +76,11 @@ namespace Akkoro
         public void StopMovingCursor()
         {
             _env.TerminateCursorJourney();
+        }
+
+        public void Stop()
+        {
+            _control.BeginTermination();
         }
     }
 }

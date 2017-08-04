@@ -156,7 +156,7 @@ namespace Akkoro
                 this.InvokeIfRequired(c => { c.Dispose(); });
         }
 
-        private void BeginTermination()
+        public void BeginTermination()
         {
             SetStatusText("Stopping...");
 
