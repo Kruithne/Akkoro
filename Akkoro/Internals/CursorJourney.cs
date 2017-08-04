@@ -42,6 +42,12 @@ namespace Akkoro
             _thread.Start();
         }
 
+        public void Terminate()
+        {
+            if (_thread != null)
+                _thread.Abort();
+        }
+
         private void Run()
         {
             double distX = Math.Abs(_destX - _startX);

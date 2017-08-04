@@ -21,6 +21,7 @@ namespace Akkoro
         private Control_FlowListing _control;
         private bool _disposed;
 
+        private CursorJourney _activeCursorJourney;
         private Dictionary<string, List<LuaFunction>> _hooks;
 
         public ScriptEnvironment(Control_FlowListing control)
@@ -83,9 +84,26 @@ namespace Akkoro
             _hooks[id].Add(chunk);
         }
 
+        public void StartCursorJourney(CursorJourney journey)
+        {
+            TerminateCursorJourney();
+            _activeCursorJourney = journey;
+            _activeCursorJourney.Start();
+        }
+
+        public void TerminateCursorJourney()
+        {
+            if (_activeCursorJourney == null)
+                return;
+
+            _activeCursorJourney.Terminate();
+            _activeCursorJourney = null;
+        }
+
         public void Flush()
         {
             TriggerEvent("SCRIPT_STOPPED");
+            TerminateCursorJourney();
             _hooks.Clear(); // Clear event hooks.
             _disposed = true;
         }
