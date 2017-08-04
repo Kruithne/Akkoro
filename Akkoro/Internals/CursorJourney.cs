@@ -58,7 +58,7 @@ namespace Akkoro
 
             if (distX > distY)
                 stepDistY *= distY / distX;
-            else if (distY < distX)
+            else if (distY > distX)
                 stepDistX *= distX / distY;
 
             double stepX = stepDistX * (_destX > _startX ? 1 : -1);
