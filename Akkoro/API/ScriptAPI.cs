@@ -65,7 +65,7 @@ namespace Akkoro
 
         public void MoveCursor(int x, int y, int speed = 1, LuaFunction callback = null)
         {
-            _env.StartCursorJourney(new CursorJourney(_env, x, y, speed));
+            _env.StartCursorJourney(new CursorJourney(_env, x, y, speed, callback));
         }
 
         public void StopMovingCursor()
