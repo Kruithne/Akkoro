@@ -79,4 +79,3 @@ The following table describes event which can be used with the `Hook` function.
 
 | Event | Parameters | Description |
 | ----- | ---------- | ----------- |
-| SCRIPT_STOPPED | None | Script has been manually stopped (not invoked if stopped by an error).
