@@ -45,11 +45,6 @@ namespace Akkoro
             _control.SetScriptName(name);
         }
 
-        public void Hook(string id, LuaFunction chunk)
-        {
-            _env.AddHook(id, chunk);
-        }
-
         public void GetCursorPosition(out int x, out int y)
         {
             Point point = InteropsManager.CursorPosition;

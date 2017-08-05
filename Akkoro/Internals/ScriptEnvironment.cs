@@ -14,7 +14,6 @@ namespace Akkoro
         private Lua _state;
         private Thread _thread;
         private Control_FlowListing _control;
-        private Dictionary<string, List<LuaFunction>> _hooks;
         private ConcurrentQueue<LuaCallback> _callbackPipe;
 
         public bool IsActive { get; private set; }
@@ -22,7 +21,6 @@ namespace Akkoro
         public ScriptEnvironment(Control_FlowListing control)
         {
             _control = control;
-            _hooks = new Dictionary<string, List<LuaFunction>>();
             _callbackPipe = new ConcurrentQueue<LuaCallback>();
         }
 
@@ -58,7 +56,6 @@ namespace Akkoro
             IsActive = false;
             _control.SetStatusText("Stopping...");
 
-            _hooks.Clear();
             _callbackPipe = new ConcurrentQueue<LuaCallback>();
 
             new Thread(Terminate).Start();
@@ -109,30 +106,6 @@ namespace Akkoro
                 return;
 
             _callbackPipe.Enqueue(new LuaCallback { Chunk = chunk, Parameters = param });
-        }
-
-        public void TriggerEvent(string id, params object[] param)
-        {
-            // Prevent events if this environment is inactive.
-            if (!IsActive)
-                return;
-
-            if (!_hooks.ContainsKey(id))
-                return; // Nothing registered with that ID.
-
-            // Loop all hooks and push them to the callback queue.
-            foreach (LuaFunction chunk in _hooks[id])
-                QueueCallback(chunk, param);
-        }
-
-        public void AddHook(string id, LuaFunction chunk)
-        {
-            // Ensure we have a container for this hook ID.
-            if (!_hooks.ContainsKey(id))
-                _hooks[id] = new List<LuaFunction>();
-
-            // Push the Lua chunk onto the hook list.
-            _hooks[id].Add(chunk);
         }
 
         private void OnScriptError(LuaScriptException e)

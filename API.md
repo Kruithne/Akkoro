@@ -95,9 +95,3 @@ Processes a string of text, automatically mapping the characters and casing, pre
 
 - `holdTime` defines how long (in milliseconds) each key is held down for.
 - `spacingTime` defines how long (in milliseconds) the time between each key press.
-
-## <a name="hooks"></a> Hook Events
-The following table describes event which can be used with the `Hook` function.
-
-| Event | Parameters | Description |
-| ----- | ---------- | ----------- |
