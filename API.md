@@ -98,6 +98,9 @@ Processes a string of text, automatically mapping the characters and casing, pre
 
 ### <a name="api-screens"></a> API: Screens
 
+#### GetColorAt(`number` x, `number` y) : `number` r, `number` g, `number` b
+Returns the `R`, `G`, `B` colour values of the pixel at the specified location.
+
 #### GetScreens() : `table`
 Returns a table containing all available screen references. Check the table below for a list of functions available from the references.
 
@@ -106,9 +109,6 @@ Returns a single reference to the primary screen. Check the table below for a li
 
 #### GetScreenAtPoint(`number` x, `number` y) : `userdata`
 Returns a single reference to the screen which contains the given `x`, `y` point. Check the table below for a list of functions available from the reference.
-
-#### GetColorAt(`number` x, `number` y) : `number` r, `number` g, `number` b
-Returns the `R`, `G`, `B` colour values of the pixel at the specified location.
 
 | Function | Parameters | Return | Description |
 | -------- | ---------- | ------ | ----------- |
@@ -154,4 +154,4 @@ Attempts to load an image file into memory, providing a reference which is detai
 | GetColorAt | None | `number` r, `number` g, `number` b | Get the RGB color value of the specified pixel. |
 | GetHeight | None | `number` | Get the height of the image. |
 | GetWidth | None | `number` | Get the width of the image. |
-| GetSize | None | `number` width, `number` height | Get the width/height of the image | 
+| GetSize | None | `number` width, `number` height | Get the width/height of the image |
