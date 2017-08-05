@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using NLua;
 
 namespace Akkoro
@@ -111,6 +112,27 @@ namespace Akkoro
         public void TypeString(string input, int holdTime = 50, int spacingTime = 100)
         {
             new KeyboardInput().TypeString(input, holdTime, spacingTime);
+        }
+
+        public LuaTable GetScreens()
+        {
+            Screen[] screens = Screen.AllScreens;
+            LuaTable table = _env.CreateTable();
+
+            for (int i = 0; i < screens.Length; i++)
+                table[i + 1] = new ScriptScreen(screens[i]);
+
+            return table;
+        }
+
+        public ScriptScreen GetPrimaryScreen()
+        {
+            return new ScriptScreen(Screen.PrimaryScreen);
+        }
+
+        public ScriptScreen GetScreenAtPoint(int x, int y)
+        {
+            return new ScriptScreen(Screen.FromPoint(new Point(x, y)));
         }
     }
 }

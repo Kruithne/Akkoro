@@ -95,3 +95,20 @@ Processes a string of text, automatically mapping the characters and casing, pre
 
 - `holdTime` defines how long (in milliseconds) each key is held down for.
 - `spacingTime` defines how long (in milliseconds) the time between each key press.
+
+### <a name="api-screens"></a> API: Screens
+
+#### GetScreens() : `table`
+Returns a table containing all available screen references. Check the table below for a list of functions available from the references.
+
+#### GetPrimaryScreen() : `userdata`
+Returns a single reference to the primary screen. Check the table below for a list of functions available from the reference.
+
+#### GetScreenAtPoint(`number` x, `number` y) : `userdata`
+Returns a single reference to the screen which contains the given `x`, `y` point. Check the table below for a list of functions available from the reference.
+
+| Function | Parameters | Return | Description |
+| -------- | ---------- | ------ | ----------- |
+| GetDeviceName | None | `string` | Returns the screen path. |
+| IsPrimary | None | `bool` | Returns true if it's the primary screen . |
+| GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen.

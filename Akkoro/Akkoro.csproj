@@ -67,6 +67,7 @@
     <Compile Include="Internals\LuaCallback.cs" />
     <Compile Include="Internals\InteropsManager.cs" />
     <Compile Include="Internals\MouseClickType.cs" />
+    <Compile Include="API\ScriptScreen.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

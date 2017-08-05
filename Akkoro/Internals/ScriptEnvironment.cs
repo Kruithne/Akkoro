@@ -86,6 +86,11 @@ namespace Akkoro
             }
         }
 
+        public LuaTable CreateTable()
+        {
+            return _state.DoString("return {};")[0] as LuaTable;
+        }
+
         private void Terminate()
         {
             if (_thread != null)
