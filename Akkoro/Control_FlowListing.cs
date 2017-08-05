@@ -173,7 +173,7 @@ namespace Akkoro
 
         public void TerminateScript()
         {
-            _env.Stop();
+            _env.Stop(true);
         }
     }
 }

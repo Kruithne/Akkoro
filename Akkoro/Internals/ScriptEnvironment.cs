@@ -51,14 +51,16 @@ namespace Akkoro
             _thread.Start();
         }
 
-        public void Stop()
+        public void Stop(bool safe = false)
         {
             IsActive = false;
-            _control.SetStatusText("Stopping...");
 
-            _callbackPipe = new ConcurrentQueue<LuaCallback>();
-
-            new Thread(Terminate).Start();
+            if (!safe)
+            {
+                _control.SetStatusText("Stopping...");
+                _callbackPipe = new ConcurrentQueue<LuaCallback>();
+                new Thread(Terminate).Start();
+            }
         }
 
         private void Run()
