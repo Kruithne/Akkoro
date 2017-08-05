@@ -161,3 +161,5 @@ Capture the specified region of the screen as an image. Returns a reference, det
 | GetHeight | None | `number` | Get the height of the image. |
 | GetWidth | None | `number` | Get the width of the image. |
 | GetSize | None | `number` width, `number` height | Get the width/height of the image |
+| Locate | `userdata` imageRef | `bool` success, `number` x, `number` y | Locates the provided image ref inside of this image ref. |
+| Save | `string` path | None | Save the capture to a file. |
