@@ -88,8 +88,6 @@ namespace Akkoro
         {
             if (_thread != null)
             {
-                _thread.Abort(); // Send abort signal.
-
                 while (_thread.IsAlive)
                     Thread.Sleep(100);
 

@@ -170,5 +170,10 @@ namespace Akkoro
             else
                 DisplayScriptDisabled();
         }
+
+        public void TerminateScript()
+        {
+            _env.Stop();
+        }
     }
 }

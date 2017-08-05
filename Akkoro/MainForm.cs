@@ -69,8 +69,12 @@ namespace Akkoro
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Possible to have dangling threads from bad users. Murder them.
-            // ( Murder the threads, not the users; although tempting. )
+            // Signal for all controls to drop their threads.
+            foreach (Control control in uiFlow.Controls)
+                if (control is Control_FlowListing)
+                    ((Control_FlowListing)control).TerminateScript();
+
+            // Trigger application termination.
             Application.Exit();
         }
     }
