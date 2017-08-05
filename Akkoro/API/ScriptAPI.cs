@@ -97,5 +97,25 @@ namespace Akkoro
             if (clickType != null)
                 clickType.SendUp();
         }
+
+        public void KeyDown(params string[] keys)
+        {
+            KeyboardInput.KeyDown(keys);
+        }
+
+        public void KeyUp(params string[] keys)
+        {
+            KeyboardInput.KeyUp(keys);
+        }
+
+        public void TypeKeys(string input, int holdTime = 50, int spacingTime = 100)
+        {
+            new KeyboardInput().TypeKeys(input, holdTime, spacingTime);
+        }
+
+        public void TypeString(string input, int holdTime = 50, int spacingTime = 100)
+        {
+            new KeyboardInput().TypeString(input, holdTime, spacingTime);
+        }
     }
 }

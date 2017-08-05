@@ -74,6 +74,28 @@ Sets the state of the given click-type to *down*. The `type` argument should be 
 #### MouseUp(`number` type)
 Sets the state of the given click-type to *up*. The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
 
+### <a name="api-keyboard"></a> API: Keyboard
+
+#### KeyDown(`string` ...)
+Signals for the provided keys to be pressed down. Keys must be provided as literals, which are listed in the [Keys document](KEYS.md).
+
+#### KeyUp(`string` ...)
+Signals for the provided keys to be released. Keys must be provided as literals, which are listed in the [Keys document](KEYS.md).
+
+#### TypeKeys(`string` input, `number` holdTime, `number` spacingTime)
+Processes a string of space/comma delimited key literals, defined in the [Keys document](KEYS.md), pressing and releasing them in order.
+
+- `holdTime` defines how long (in milliseconds) each key is held down for.
+- `spacingTime` defines how long (in milliseconds) the time between each key press.
+
+Placing `^` at the start of a literal will indicate the key should not be released. In reverse, placing `!` at the start of a literal will indicate only a key release.
+
+#### TypeString(`string` input, `number` holdTime, `number` spacingTime)
+Processes a string of text, automatically mapping the characters and casing, pressing and releasing them in order.
+
+- `holdTime` defines how long (in milliseconds) each key is held down for.
+- `spacingTime` defines how long (in milliseconds) the time between each key press.
+
 ## <a name="hooks"></a> Hook Events
 The following table describes event which can be used with the `Hook` function.
 
