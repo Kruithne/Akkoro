@@ -216,7 +216,7 @@ namespace Akkoro
 
         public string ReadFile(string path)
         {
-            return File.ReadAllText(path);  
+            return File.ReadAllText(path);
         }
 
         public void WriteFile(string path, string data)
