@@ -228,5 +228,14 @@ namespace Akkoro
         {
             return new ScriptImage(new Bitmap(path));
         }
+
+        public ScriptImage Capture(int x, int y, int width, int height)
+        {
+            Bitmap img = new Bitmap(width, height);
+            using (Graphics gfx = Graphics.FromImage(img))
+                gfx.CopyFromScreen(x, y, 0, 0, img.Size, CopyPixelOperation.SourceCopy);
+
+            return new ScriptImage(img);
+        }
     }
 }

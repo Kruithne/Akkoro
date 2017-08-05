@@ -114,7 +114,8 @@ Returns a single reference to the screen which contains the given `x`, `y` point
 | -------- | ---------- | ------ | ----------- |
 | GetDeviceName | None | `string` | Returns the screen path. |
 | IsPrimary | None | `bool` | Returns true if it's the primary screen . |
-| GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen.
+| GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen. |
+| Capture | None | `userdata` | Captures the screen. Check the [Image Reference](API.md#api-image-ref) for details. |
 
 ### <a name="api-files"></a> API: Files
 
@@ -148,6 +149,11 @@ Writes the given string to a file at the specified path. If the file cannot be w
 
 #### LoadImage(`string` path) : `userdata`
 Attempts to load an image file into memory, providing a reference which is detailed in the table below.
+
+#### Capture(`number` x, `number` y, `number` width, `number` height) : `userdata`
+Capture the specified region of the screen as an image. Returns a reference, detailed in the table below.
+
+#### <a name="api-image-ref"></a> Image Reference
 
 | Function | Parameters | Return | Description |
 | -------- | ---------- | ------ | ----------- |

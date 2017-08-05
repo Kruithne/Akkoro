@@ -2,7 +2,7 @@
 
 namespace Akkoro
 {
-    class ScriptImage
+    public class ScriptImage
     {
         private Bitmap _bitmap;
 
