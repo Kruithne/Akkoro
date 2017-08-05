@@ -23,8 +23,6 @@ namespace Akkoro
         private Label _componentStatusText;
 
         private ScriptEnvironment _env;
-        private Thread _thread;
-
         private bool _disposing;
 
         public int ListingIndex { get; private set; }
@@ -131,7 +129,7 @@ namespace Akkoro
             _componentStatusText.InvokeIfRequired(c => { c.Text = text; });
         }
 
-        public void EnableScript()
+        public void DisplayScriptEnabled()
         {
             IsActive = true;
             SetStatusText("Active");
@@ -139,31 +137,15 @@ namespace Akkoro
             _componentOperationButton.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_button_stop; });
         }
 
-        public void DisableScript()
+        public void DisplayScriptDisabled()
         {
             IsActive = false;
             SetStatusText("Stopped");
             _componentStatus.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_backdrop; });
             _componentOperationButton.InvokeIfRequired(c => { c.BackgroundImage = Properties.Resources.listing_button_start; });
 
-            if (_env != null)
-                _env.Flush();
-
-            _env = null;
-            _thread = null;
-
             if (_disposing)
                 this.InvokeIfRequired(c => { c.Dispose(); });
-        }
-
-        public void BeginTermination()
-        {
-            SetStatusText("Stopping...");
-
-            if (_thread != null)
-                new TerminationThread(_thread, this).Begin();
-            else
-                DisableScript();
         }
 
         private void OnOperationButtonClick(object sender, MouseEventArgs e)
@@ -171,20 +153,22 @@ namespace Akkoro
             if (!IsActive)
             {
                 _env = new ScriptEnvironment(this);
-                _thread = new Thread(_env.Activate);
-                
-                _thread.Start();
+                _env.Start();
             }
             else
             {
-                BeginTermination();
+                _env.Stop();
             }
         }
 
         private void OnTerminateButtonClick(object sender, MouseEventArgs e)
         {
             _disposing = true;
-            BeginTermination();
+
+            if (_env != null && _env.IsActive)
+                _env.Stop();
+            else
+                DisplayScriptDisabled();
         }
     }
 }

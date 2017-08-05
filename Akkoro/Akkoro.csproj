@@ -51,6 +51,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internals\ControlHelpers.cs" />
@@ -61,9 +62,7 @@
       <DependentUpon>Control_FlowListing.cs</DependentUpon>
     </Compile>
     <Compile Include="Internals\CursorJourney.cs" />
-    <Compile Include="Internals\LuaTimer.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Internals\LuaCallback.cs" />
     <Compile Include="Internals\InteropsManager.cs" />
     <Compile Include="Internals\MouseClickType.cs" />
     <Compile Include="MainForm.cs">

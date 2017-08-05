@@ -4,6 +4,7 @@ using System.Linq;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using System.Threading;
 using NLua;
 
@@ -23,6 +24,9 @@ namespace Akkoro
         private LuaFunction _callback;
         private ScriptEnvironment _env;
 
+        private bool _active;
+        private static CursorJourney _activeJourney;
+
         public CursorJourney(ScriptEnvironment env, int destX, int destY, int speed = 1, LuaFunction callback = null)
         {
             _destX = destX;
@@ -34,40 +38,47 @@ namespace Akkoro
 
         public void Start()
         {
+            // Ensure we interrupt another CursorJourney if there is one.
+            StopActiveJourney();
+
+            // Register this as the active journey.
+            _activeJourney = this;
+            _active = true;
+
+            // Cache the current cursor position.
             Point startPos = InteropsManager.CursorPosition;
             _startX = startPos.X;
             _startY = startPos.Y;
 
+            // Begin the movement thread.
             _thread = new Thread(Run);
             _thread.Start();
         }
 
-        public void Terminate()
-        {
-            if (_thread != null)
-                _thread.Abort();
-        }
-
         private void Run()
         {
+            // Distance between the start point, and destination point.
             double distX = Math.Abs(_destX - _startX);
             double distY = Math.Abs(_destY - _startY);
 
+            // How much distance we'll cover per tick.
             double stepDistX = 5 * _speed;
             double stepDistY = 5 * _speed;
 
+            // Process both axis at the same speed by slowing down the shorter distance.
             if (distX > distY)
                 stepDistY *= distY / distX;
             else if (distY > distX)
                 stepDistX *= distX / distY;
 
+            // Calculate which direction each axis will go in.
             double stepX = stepDistX * (_destX > _startX ? 1 : -1);
             double stepY = stepDistY * (_destY > _startY ? 1 : -1);
 
             double currX = _startX;
             double currY = _startY;
 
-            while (distX > 0 || distY > 0)
+            while (_active && (distX > 0 || distY > 0))
             {
                 if (distX > 0)
                 {
@@ -95,9 +106,17 @@ namespace Akkoro
                 Thread.Sleep(10);
             }
 
-            // Invoke callback
-            if (_callback != null)
-                _env.SafeCall(_callback);
+            // Only invoke the callback if we're still active.
+            if (_active && _callback != null)
+                _env.QueueCallback(_callback);
+
+            _active = false;
+        }
+
+        public static void StopActiveJourney()
+        {
+            if (_activeJourney != null && _activeJourney._active)
+                _activeJourney._active = false;
         }
     }
 }

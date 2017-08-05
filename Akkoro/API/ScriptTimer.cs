@@ -10,12 +10,35 @@ namespace Akkoro
 {
     public class ScriptTimer
     {
-        private LuaTimer _timer;
+        private Timer _timer;
+        private LuaFunction _chunk;
+        private ScriptEnvironment _env;
+        private bool _repeating;
 
         public ScriptTimer(ScriptEnvironment env, int delay, LuaFunction chunk)
         {
-            _timer = new LuaTimer(delay, chunk);
-            _timer.Elapsed += env.ScriptTimer_Elapsed;
+            _timer = new Timer(delay);
+            _timer.Elapsed += OnScriptTimerElapsed;
+
+            _chunk = chunk;
+            _env = env;
+        }
+
+        private void OnScriptTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!_env.IsActive)
+            {
+                // Environment is disposed, stop the timer.
+                _timer.Stop();
+                return;
+            }
+
+            // Invoke the callback in the environment.
+            _env.QueueCallback(_chunk);
+
+            // If we're not repeating, stop the timer.
+            if (!_repeating)
+                _timer.Stop();
         }
 
         public void SetDelay(int delay)
@@ -25,18 +48,18 @@ namespace Akkoro
 
         public void SetFunction(LuaFunction chunk)
         {
-            _timer.Chunk = chunk;
+            _chunk = chunk;
         }
 
         public void Start()
         {
-            _timer.IsRepeating = false;
+            _repeating = false;
             _timer.Start();
         }
 
         public void StartRepeating()
         {
-            _timer.IsRepeating = true;
+            _repeating = true;
             _timer.Start();
         }
 

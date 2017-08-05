@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
 using System.Timers;
+using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using NLua;
 using NLua.Exceptions;
 
@@ -15,105 +18,30 @@ namespace Akkoro
     public class ScriptEnvironment
     {
         private Lua _state;
-        private ScriptAPI _api;
+        private Thread _thread;
         private Control_FlowListing _control;
-        private bool _disposed;
-
-        private CursorJourney _activeCursorJourney;
         private Dictionary<string, List<LuaFunction>> _hooks;
+        private ConcurrentQueue<LuaCallback> _callbackPipe;
+
+        public bool IsActive { get; private set; }
 
         public ScriptEnvironment(Control_FlowListing control)
         {
             _control = control;
-            _api = new ScriptAPI(this, control);
-        }
-
-        public void Activate()
-        {
             _hooks = new Dictionary<string, List<LuaFunction>>();
-            _state = GetNewEnvironment();
-
-            try
-            {
-                _control.EnableScript();
-                _state.DoFile(_control.FilePath);
-            }
-            catch (LuaScriptException e)
-            {
-                OnScriptError(e);
-            }
+            _callbackPipe = new ConcurrentQueue<LuaCallback>();
         }
 
-        public void TriggerEvent(string id, params object[] param)
+        public void Start()
         {
-            if (_hooks.ContainsKey(id))
-                foreach (LuaFunction chunk in _hooks[id])
-                    if (!SafeCall(chunk, param))
-                        return;
-        }
-
-        public bool SafeCall(LuaFunction chunk, params object[] param)
-        {
-            try
-            {
-                chunk.Call(param);
-                return true;
-            }
-            catch (LuaScriptException e)
-            {
-                OnScriptError(e);
-            }
-            return false;
-        }
-
-        private void OnScriptError(LuaScriptException e)
-        {
-            _hooks.Clear();
-            _control.DisableScript();
-            _control.SetStatusText("Error");
-            MessageBox.Show(e.Message, "Akkoro Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        public void AddHook(string id, LuaFunction chunk)
-        {
-            if (!_hooks.ContainsKey(id))
-                _hooks[id] = new List<LuaFunction>();
-
-            _hooks[id].Add(chunk);
-        }
-
-        public void StartCursorJourney(CursorJourney journey)
-        {
-            TerminateCursorJourney();
-            _activeCursorJourney = journey;
-            _activeCursorJourney.Start();
-        }
-
-        public void TerminateCursorJourney()
-        {
-            if (_activeCursorJourney == null)
-                return;
-
-            _activeCursorJourney.Terminate();
-            _activeCursorJourney = null;
-        }
-
-        public void Flush()
-        {
-            TriggerEvent("SCRIPT_STOPPED");
-            TerminateCursorJourney();
-            _hooks.Clear(); // Clear event hooks.
-            _disposed = true;
-        }
-
-        private Lua GetNewEnvironment()
-        {
-            Lua state = new Lua();
+            // Prepare new Lua environment.
+            _state = new Lua();
+            IsActive = true;
 
             // Inject environment set-up script.
             Assembly asm = Assembly.GetExecutingAssembly();
             using (StreamReader reader = new StreamReader(asm.GetManifestResourceStream("Akkoro.environment.lua")))
-                state.DoString(reader.ReadToEnd());
+                _state.DoString(reader.ReadToEnd());
 
             // Inject API functions.
             foreach (MethodInfo method in typeof(ScriptAPI).GetMethods())
@@ -122,28 +50,102 @@ namespace Akkoro
                 if (method.Name == "ToString" || method.Name == "Equals" || method.Name == "GetHashCode" || method.Name == "GetType")
                     continue;
 
-                state.RegisterFunction(method.Name, _api, method);
+                _state.RegisterFunction(method.Name, new ScriptAPI(this, _control), method);
             }
 
-            return state;
+            _control.DisplayScriptEnabled();
+
+            _thread = new Thread(Run);
+            _thread.Start();
         }
 
-        public void ScriptTimer_Elapsed(object sender, ElapsedEventArgs e)
+        public void Stop()
         {
-            LuaTimer timer = (LuaTimer)sender;
+            IsActive = false;
+            _control.SetStatusText("Stopping...");
 
-            if (_disposed)
+            _hooks.Clear();
+            _callbackPipe = new ConcurrentQueue<LuaCallback>();
+
+            new Thread(Terminate).Start();
+        }
+
+        private void Run()
+        {
+            try
             {
-                // Environment is disposed, don't process timer tickks.
-                timer.Stop();
-                return;
+                // Execute the initial file.
+                _state.DoFile(_control.FilePath);
+
+                // Process callbacks while the environment is active.
+                while (IsActive)
+                {
+                    LuaCallback callback;
+                    while (IsActive && _callbackPipe.TryDequeue(out callback))
+                        callback.Chunk.Call(callback.Parameters);
+
+                    Thread.Sleep(1);
+                }
+            }
+            catch (LuaScriptException e)
+            {
+                OnScriptError(e);
+            }
+        }
+
+        private void Terminate()
+        {
+            if (_thread != null)
+            {
+                _thread.Abort(); // Send abort signal.
+
+                while (_thread.IsAlive)
+                    Thread.Sleep(100);
+
+                _thread = null; // Drop reference.
             }
 
-            if (!SafeCall(timer.Chunk))
-                timer.Stop();
+            _control.DisplayScriptDisabled();
+        }
 
-            if (!timer.IsRepeating)
-                timer.Stop();
+        public void QueueCallback(LuaFunction chunk, params object[] param)
+        {
+            // Prevent callbacks if this environment is inactive.
+            if (!IsActive)
+                return;
+
+            _callbackPipe.Enqueue(new LuaCallback { Chunk = chunk, Parameters = param });
+        }
+
+        public void TriggerEvent(string id, params object[] param)
+        {
+            // Prevent events if this environment is inactive.
+            if (!IsActive)
+                return;
+
+            if (!_hooks.ContainsKey(id))
+                return; // Nothing registered with that ID.
+
+            // Loop all hooks and push them to the callback queue.
+            foreach (LuaFunction chunk in _hooks[id])
+                QueueCallback(chunk, param);
+        }
+
+        public void AddHook(string id, LuaFunction chunk)
+        {
+            // Ensure we have a container for this hook ID.
+            if (!_hooks.ContainsKey(id))
+                _hooks[id] = new List<LuaFunction>();
+
+            // Push the Lua chunk onto the hook list.
+            _hooks[id].Add(chunk);
+        }
+
+        private void OnScriptError(LuaScriptException e)
+        {
+            Stop();
+            _control.SetStatusText("Error");
+            MessageBox.Show(e.Message, "Akkoro Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
