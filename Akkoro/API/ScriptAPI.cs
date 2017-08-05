@@ -223,5 +223,10 @@ namespace Akkoro
         {
             File.WriteAllText(path, data);
         }
+
+        public ScriptImage LoadImage(string path)
+        {
+            return new ScriptImage(new Bitmap(path));
+        }
     }
 }

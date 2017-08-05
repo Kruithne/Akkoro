@@ -143,3 +143,15 @@ It's important to note this function is intended for reading generic text files.
 
 #### WriteFile(`string` path, `string` data)
 Writes the given string to a file at the specified path. If the file cannot be written for any reason, an error will be thrown.
+
+### <a name="api-image"></a> API: Images
+
+#### LoadImage(`string` path) : `userdata`
+Attempts to load an image file into memory, providing a reference which is detailed in the table below.
+
+| Function | Parameters | Return | Description |
+| -------- | ---------- | ------ | ----------- |
+| GetColorAt | None | `number` r, `number` g, `number` b | Get the RGB color value of the specified pixel. |
+| GetHeight | None | `number` | Get the height of the image. |
+| GetWidth | None | `number` | Get the width of the image. |
+| GetSize | None | `number` width, `number` height | Get the width/height of the image | 
