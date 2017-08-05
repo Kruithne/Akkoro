@@ -213,7 +213,7 @@ namespace Akkoro
 
         public void WriteFile(string path, string data)
         {
-            File.WriteAllText(path, data)
+            File.WriteAllText(path, data);
         }
     }
 }
