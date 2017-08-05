@@ -112,3 +112,31 @@ Returns a single reference to the screen which contains the given `x`, `y` point
 | GetDeviceName | None | `string` | Returns the screen path. |
 | IsPrimary | None | `bool` | Returns true if it's the primary screen . |
 | GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen.
+
+### <a name="api-screens"></a> API: Files
+
+#### FileExists(`string` path) : `bool`
+Returns true if a valid system entry exists at the given path, and the entry is a file.
+
+#### DirectoryExists(`string` path) : `bool`
+Returns true if a valid system entry exists at the given path, and the entry is a directory.
+
+#### CreateDirectory(`string` path) : `bool`
+Attempts to create a directory at the given path. If successful, the function returns true.
+
+#### CreateFile(`string` path) : `bool`
+Attempts to create a file at the given path. If successful, the function returns true.
+
+#### Delete(`string` path) : `bool`
+Attempts to delete a file or directory at the given path. If successful, the function returns true.
+
+#### ListDirectory(`string` path) : `table`
+If the given path is a valid directory, a table is returned containing all directory entries. If the directory does not exist, is not valid, or cannot be read, an error will be thrown.
+
+#### ReadFile(`string` path) : `string`
+Returns a string containing the contents of the file at the given path. If the file cannot be found, read, or is invalid, then an error will be thrown.
+
+It's important to note this function is intended for reading generic text files. If you intend to read binary files, or files of large size, you should make use of the standard Lua IO functions.
+
+#### WriteFile(`string` path, `string` data)
+Writes the given string to a file at the specified path. If the file cannot be written for any reason, an error will be thrown.

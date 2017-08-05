@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 using NLua;
 
 namespace Akkoro
@@ -133,6 +135,85 @@ namespace Akkoro
         public ScriptScreen GetScreenAtPoint(int x, int y)
         {
             return new ScriptScreen(Screen.FromPoint(new Point(x, y)));
+        }
+
+        public bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
+
+        public bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public bool CreateDirectory(string path)
+        {
+            try
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool CreateFile(string file)
+        {
+            try
+            {
+                File.Create(file);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(string path)
+        {
+            try
+            {
+                if (FileExists(path))
+                {
+                    File.Delete(path);
+                    return true;
+                }
+                else if (DirectoryExists(path))
+                {
+                    Directory.Delete(path);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public LuaTable ListDirectory(string path)
+        {
+            LuaTable table = _env.CreateTable();
+            int index = 1;
+
+            foreach (string entry in Directory.EnumerateFileSystemEntries(path))
+                table[index++] = entry;
+
+            return table;
+        }
+
+        public string ReadFile(string path)
+        {
+            return File.ReadAllText(path);  
+        }
+
+        public void WriteFile(string path, string data)
+        {
+            File.WriteAllText(path, data)
         }
     }
 }
