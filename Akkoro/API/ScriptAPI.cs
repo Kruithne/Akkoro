@@ -137,6 +137,14 @@ namespace Akkoro
             return new ScriptScreen(Screen.FromPoint(new Point(x, y)));
         }
 
+        public void GetColorAt(int x, int y, out int r, out int g, out int b)
+        {
+            Color pixel = InteropsManager.GetColorAt(x, y);
+            r = pixel.R;
+            g = pixel.G;
+            b = pixel.B;
+        }
+
         public bool FileExists(string path)
         {
             return File.Exists(path);

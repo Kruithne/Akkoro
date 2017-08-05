@@ -22,5 +22,27 @@ namespace Akkoro
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
         public static void SendKeyEvent(Keys key, uint keyEvent) { keybd_event((byte)key, 0x45, keyEvent, (UIntPtr)0); }
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        private static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+        private static Bitmap pixelBuffer = new Bitmap(1, 1);
+        public static Color GetColorAt(int x, int y)
+        {
+            using (Graphics gfx = Graphics.FromImage(pixelBuffer))
+            {
+                using (Graphics src = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    IntPtr srcHdc = src.GetHdc();
+                    IntPtr gfxHdc = gfx.GetHdc();
+
+                    BitBlt(gfxHdc, 0, 0, 1, 1, srcHdc, x, y, (int)CopyPixelOperation.SourceCopy);
+
+                    src.ReleaseHdc();
+                    gfx.ReleaseHdc();
+                }
+            }
+
+            return pixelBuffer.GetPixel(0, 0);
+        }
     }
 }

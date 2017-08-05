@@ -107,6 +107,9 @@ Returns a single reference to the primary screen. Check the table below for a li
 #### GetScreenAtPoint(`number` x, `number` y) : `userdata`
 Returns a single reference to the screen which contains the given `x`, `y` point. Check the table below for a list of functions available from the reference.
 
+#### GetColorAt(`number` x, `number` y) : `number` r, `number` g, `number` b
+Returns the `R`, `G`, `B` colour values of the pixel at the specified location.
+
 | Function | Parameters | Return | Description |
 | -------- | ---------- | ------ | ----------- |
 | GetDeviceName | None | `string` | Returns the screen path. |
