@@ -116,7 +116,7 @@ Returns the `R`, `G`, `B` colour values of the pixel at the specified location.
 | IsPrimary | None | `bool` | Returns true if it's the primary screen . |
 | GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen.
 
-### <a name="api-screens"></a> API: Files
+### <a name="api-files"></a> API: Files
 
 #### FileExists(`string` path) : `bool`
 Returns true if a valid system entry exists at the given path, and the entry is a file.
