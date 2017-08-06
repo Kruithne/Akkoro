@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Threading;
 using System.Collections.Generic;
 
 namespace Akkoro
