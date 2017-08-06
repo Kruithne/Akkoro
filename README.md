@@ -62,7 +62,7 @@ end);
 The `Hook` function allows us to provide a callback which will recieve all keyboard events. The `key` parameter is the integer value of the key that was pressed, with `27` in the example being the Escape key, as detailed in the [Keys document](KEYS.md).
 
 
-Fundamentally, keyboard input boils down to two events, **press** and **release**. To emulate these, we can use the `MouseDown` and `MouseUp` calls.
+Fundamentally, keyboard input boils down to two events, **press** and **release**. To emulate these, we can use the `KeyDown` and `KeyUp` calls.
 
 ```Lua
 KeyDown("Space");
