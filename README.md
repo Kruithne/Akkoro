@@ -8,6 +8,8 @@ Akkoro provides automation scripting for sane people. Using scripts written in L
 
 A full [API Reference](API.md) should be included alongside this document.
 
+![Screenshot](screenshot.png)
+
 ## <a name="examples"></a> Examples
 
 ### <a name="examples-cursors"></a> Mouse
@@ -159,8 +161,6 @@ timer:Start(); -- Start the timer, executing just once.
 As mentioned in the snippet above, once the timer is started it will only execute once. To achieve the repetitive behavior of the `Every` function, we simply call `StartRepeating` instead of `Start`.
 
 For more detailed information on the timer functions, see the API sections on [timers](API.md#api-timers) and [timer references](API.md#timer-ref).
-
-![Screenshot](https://github.com/Kruithne/Akkoro/blob/master/screenshot.png?raw=true)
 
 ### Region Capture / Image Detection
 
