@@ -116,6 +116,7 @@ Returns a single reference to the screen which contains the given `x`, `y` point
 | IsPrimary | None | `bool` | Returns true if it's the primary screen . |
 | GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen. |
 | Capture | None | `userdata` | Captures the screen. Check the [Image Reference](API.md#api-image-ref) for details. |
+| Capture | `number` x, `number` y, `number` width, `number` height | `userdata` | Same as `Capture`, but a specific region. |
 
 ### <a name="api-files"></a> API: Files
 

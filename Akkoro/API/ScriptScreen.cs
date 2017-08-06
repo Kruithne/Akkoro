@@ -25,10 +25,16 @@ namespace Akkoro
         public ScriptImage Capture()
         {
             Rectangle bound = _screen.Bounds;
-            Bitmap bitmap = new Bitmap(bound.Width, bound.Height);
+            return Capture(0, 0, bound.Width, bound.Height);
+        }
+
+        public ScriptImage Capture(int x, int y, int width, int height)
+        {
+            Rectangle bound = _screen.Bounds;
+            Bitmap bitmap = new Bitmap(width, height);
 
             using (Graphics gfx = Graphics.FromImage(bitmap))
-                gfx.CopyFromScreen(bound.X, bound.Y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
+                gfx.CopyFromScreen(bound.X + x, bound.Y + y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
 
             return new ScriptImage(bitmap);
         }

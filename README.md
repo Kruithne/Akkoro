@@ -147,3 +147,62 @@ timer:Start(); -- Start the timer, executing just once.
 As mentioned in the snippet above, once the timer is started it will only execute once. To achieve the repetitive behavior of the `Every` function, we simply call `StartRepeating` instead of `Start`.
 
 For more detailed information on the timer functions, see the API sections on [timers](API.md#api-timers) and [timer references](API.md#timer-ref).
+
+### Region Capture / Image Detection
+
+In this section, we're going to cover a powerful utility provided by Akkoro which allows us to capture specific parts of the screen, as well as locate things. Let's start simple...
+
+
+```Lua
+local screen = GetPrimaryScreen();
+local capture = screen:Capture();
+capture:Save("capture-screen.png");
+```
+
+In the above example, we get a reference to the primary screen, more information on that reference can be found in the [Screens API](API.md#api-screens) section. From that reference, we call `Capture()`, which returns another reference, this one acting as a screenshot, more information of which can be found in the [Image API](API.md#api-image) section. Rather than doing anything fancy with it, we simply call `Save()` to store the screenshot as a file.
+
+```Lua
+local screen = GetPrimaryScreen();
+local capture = screen:Capture();
+local icon = LoadImage("find-me.png");
+
+local success, x, y = capture:Locate(icon);
+if success then
+    Status("Located: " .. x .. ", " .. y);
+else
+    Status("Unable to locate!");
+end
+```
+
+Here we get a little more advanced. The first thing you'll notice is we have another variable called `icon` which is the result of a call to `LoadImage`. As you might be able to guess, `LoadImage` loads an image file, creating the same kind of reference that `Capture()` returns. Rather than saving the screen capture, we instead call `Locate()`, providing the icon image. This will scan over the capture in search of the icon and if found, provide the relative `X` and `Y` position that it was located at.
+
+Two things to note:
+
+- The `X` and `Y` values returned from `Locate()` are relative to the image searched, not the screen.
+- Searching large images, such as screen captures, can be slow. If you intend to repeatedly scan, it's better to reduce the region you search in as much as possible.
+
+```Lua
+local screen = GetPrimaryScreen();
+local capture = screen:Capture();
+
+local icon = LoadImage("some-icon.png");
+local success, x, y = capture:Locate(icon);
+
+if success then
+    -- We found the icon, every five seconds, check the icon...
+    Every(5000, function()
+        local region = screen:Capture(x, y, icon:GetWidth(), icon:GetHeight());
+        local success, x, y = region:Locate(icon);
+        if not success then
+            Status("The icon has changed!");
+            Stop(); -- Kill the script.
+        end
+    end);
+else
+    Status("Unable to locate icon!");
+end
+```
+
+This example takes into account both of the points mentioned above. Firstly, it locates the icon on the screen. Once we find it, rather than scanning the entire screen again, we simply scan the place where we originally found it, checking that it remains the same each time.
+
+For more information on the API used in these examples, check out both the [Screens API](API.md#api-screens) and the [Image API](API.md#api-image).
