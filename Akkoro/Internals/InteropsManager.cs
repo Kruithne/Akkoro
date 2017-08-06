@@ -40,6 +40,7 @@ namespace Akkoro
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private static IntPtr _hookID = IntPtr.Zero;
+        private static LowLevelKeyboardProc Hook = HookCallback;
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
         private static List<ScriptEnvironment> _environments = new List<ScriptEnvironment>();
 
@@ -85,7 +86,7 @@ namespace Akkoro
         {
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
-                _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, HookCallback, GetModuleHandle(curModule.ModuleName), 0);
+                _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, Hook, GetModuleHandle(curModule.ModuleName), 0);
         }
 
         public static void DisbandHooking()
