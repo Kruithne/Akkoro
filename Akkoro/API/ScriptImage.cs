@@ -49,9 +49,14 @@ namespace Akkoro
                 return false;
 
             for (int x = 0; x < image.GetWidth(); x++)
+            {
                 for (int y = 0; y < image.GetHeight(); y++)
-                    if (GetColorAt(oX + x, oY + y) != image.GetColorAt(x, y))
+                {
+                    Color imageColor = image.GetColorAt(x, y);
+                    if (imageColor.A > 0 && GetColorAt(oX + x, oY + y) != imageColor)
                         return false;
+                }
+            }
 
             return true;
         }
