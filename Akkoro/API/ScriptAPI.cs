@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 using NLua;
 
 namespace Akkoro
@@ -274,6 +275,11 @@ namespace Akkoro
                 table[index++] = new ScriptProcess(proc);
 
             return table;
+        }
+
+        public void Sleep(int time)
+        {
+            Thread.Sleep(time);
         }
     }
 }

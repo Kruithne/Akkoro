@@ -69,7 +69,7 @@ namespace Akkoro
             Color firstPixel = image.GetColorAt(0, 0);
             for (int x = 0; x < GetWidth(); x++)
                 for (int y = 0; y < GetHeight(); y++)
-                    if (GetColorAt(x, y) == firstPixel)
+                    if (firstPixel.A == 0 || GetColorAt(x, y) == firstPixel)
                         if (Match(x, y, image, out fX, out fY))
                             return true;
 
