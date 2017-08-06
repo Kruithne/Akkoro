@@ -118,8 +118,8 @@ Returns a single reference to the screen which contains the given `x`, `y` point
 | GetDeviceName | None | `string` | Returns the screen path. |
 | IsPrimary | None | `bool` | Returns true if it's the primary screen . |
 | GetBounds | None | `number` x, `number` y, `number` width, `number` height | Returns the boundaries of the screen. |
-| Capture | None | `userdata` | Captures the screen. Check the [Image Reference](API.md#api-image-ref) for details. |
-| Capture | `number` x, `number` y, `number` width, `number` height | `userdata` | Same as `Capture`, but a specific region. |
+| Capture | None | [Image Reference](API.md#api-image-ref) | Captures the screen. |
+| Capture | `number` x, `number` y, `number` width, `number` height | [Image Reference](API.md#api-image-ref) | Same as `Capture`, but a specific region. |
 
 ### <a name="api-files"></a> API: Files
 
@@ -165,5 +165,32 @@ Capture the specified region of the screen as an image. Returns a reference, det
 | GetHeight | None | `number` | Get the height of the image. |
 | GetWidth | None | `number` | Get the width of the image. |
 | GetSize | None | `number` width, `number` height | Get the width/height of the image |
-| Locate | `userdata` imageRef | `bool` success, `number` x, `number` y | Locates the provided image ref inside of this image ref. |
+| Locate | [Image Reference](API.md#api-image-ref) | `bool` success, `number` x, `number` y | Locates the provided image ref inside of this image ref. |
 | Save | `string` path | None | Save the capture to a file. |
+
+### <a name="api-process"></a> API: Processes
+
+#### Process() : `userdata` procRef
+Returns a reference to the current process (Akkoro). Check [Process Reference](API.md#api-process-ref) for details.
+
+#### ProcessByID(`number` id) : `userdata` procRef
+Returns a reference to the process with the given identifier. Check [Process Reference](API.md#api-process-ref) for details.
+
+#### ProcessByName(`string` name) : `table` refs
+Returns a table containing processes references which share the provided name. Check [Process Reference](API.md#api-process-ref) for details.
+
+#### ProcessList() : `table` refs
+Returns a table containing process references to all active processes running. Check [Process Reference](API.md#api-process-ref) for details.
+
+#### <a name="api-process-ref"></a> Process Reference
+
+| Function | Parameters | Return | Description |
+| -------- | ---------- | ------ | ----------- |
+| GetTitle | None | `string` | Title of the process main window. |
+| GetID | None | `number` | System identifier for this process. |
+| IsAlive | None | `bool` | Check if the process is alive. |
+| Kill | None | None | Terminates the process. |
+| Focus | None | None | Focus the process window. |
+| GetPosition | None | `number` x, `number` y, `number` width, `number` height | Main window position. |
+| Capture | None | [Image Reference](API.md#api-image-ref) | Capture the process window. |
+| Capture | `number` x, `number` y, `number` width, `number` height | [Image Reference](API.md#api-image-ref) | Capture a relative region of the process window. |

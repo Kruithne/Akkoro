@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ScriptImage.cs" />
+    <Compile Include="API\ScriptProcess.cs" />
     <Compile Include="Internals\ControlHelpers.cs" />
     <Compile Include="Control_FlowListing.cs">
       <SubType>Component</SubType>
@@ -63,7 +64,6 @@
       <DependentUpon>Control_FlowListing.cs</DependentUpon>
     </Compile>
     <Compile Include="Internals\CursorJourney.cs" />
-    <Compile Include="Internals\HookThread.cs" />
     <Compile Include="Internals\KeyboardTyper.cs" />
     <Compile Include="Internals\KeyMap.cs" />
     <Compile Include="Internals\LuaCallback.cs" />

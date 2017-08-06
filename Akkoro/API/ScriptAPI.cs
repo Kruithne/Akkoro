@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 using NLua;
 
 namespace Akkoro
@@ -241,6 +242,38 @@ namespace Akkoro
         public void Hook(LuaFunction chunk)
         {
             _env.HookKey(chunk);
+        }
+
+        public ScriptProcess Process()
+        {
+            return new ScriptProcess(System.Diagnostics.Process.GetCurrentProcess());
+        }
+
+        public ScriptProcess ProcessByID(int id)
+        {
+            return new ScriptProcess(System.Diagnostics.Process.GetProcessById(id));
+        }
+
+        public LuaTable ProcessByName(string name)
+        {
+            LuaTable table = _env.CreateTable();
+
+            int index = 1;
+            foreach (Process proc in System.Diagnostics.Process.GetProcessesByName(name))
+                table[index++] = new ScriptProcess(proc);
+
+            return table;
+        }
+
+        public LuaTable ProcessList()
+        {
+            LuaTable table = _env.CreateTable();
+
+            int index = 1;
+            foreach (Process proc in System.Diagnostics.Process.GetProcesses())
+                table[index++] = new ScriptProcess(proc);
+
+            return table;
         }
     }
 }

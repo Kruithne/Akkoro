@@ -46,6 +46,18 @@ It's possible that after having started the cursor moving with `MoveCursor`, you
 
 ### <a name="examples-keyboard"></a> Keyboard
 
+Before we jump in to emulating keyboard input using scripts, here's a quick example on how we can capture keyboard input...
+
+```Lua
+Hook(function(key)
+    if key == 27 then
+        Stop();
+    end
+end);
+```
+The `Hook` function allows us to provide a callback which will recieve all keyboard events. The `key` parameter is the integer value of the key that was pressed, with `27` in the example being the Escape key, as detailed in the [Keys document](KEYS.md).
+
+
 Fundamentally, keyboard input boils down to two events, **press** and **release**. To emulate these, we can use the `MouseDown` and `MouseUp` calls.
 
 ```Lua
@@ -204,5 +216,22 @@ end
 ```
 
 This example takes into account both of the points mentioned above. Firstly, it locates the icon on the screen. Once we find it, rather than scanning the entire screen again, we simply scan the place where we originally found it, checking that it remains the same each time.
+
+Rather than trying to figure out where a specific window is on the screen based on identifying parts of it, we can make this easier by making use of the [Process API](API.md#api-process) to locate a window.
+
+```Lua
+local calcList = ProcessByName("calc");
+if #calcList then
+    local first = calcList[1];
+    local _, _, width, height = first:GetPosition();
+
+    local capture = first:Capture(width / 2, height / 2, width / 2, height / 2);
+    capture:Save("half-a-calc.png");
+else
+    Status("No calculator running! :()")
+end
+```
+
+In that example, we grab the running process of the Windows Calculator and, using the dimensions obtained through `GetPosition()`, we create a capture of the bottom-right region of the window, saving the result to a file!
 
 For more information on the API used in these examples, check out both the [Screens API](API.md#api-screens) and the [Image API](API.md#api-image).
