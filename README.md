@@ -8,6 +8,8 @@ Akkoro provides automation scripting for sane people. Using scripts written in L
 
 A full [API Reference](API.md) should be included alongside this document.
 
+**Download:** [Akkoro v1.0.0 (Beta)](https://github.com/Kruithne/Akkoro/releases/download/1.0.0/Akkoro-1.0.0.zip)
+
 ![Screenshot](screenshot.png)
 
 ## <a name="examples"></a> Examples
