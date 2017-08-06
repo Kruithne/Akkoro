@@ -160,6 +160,8 @@ As mentioned in the snippet above, once the timer is started it will only execut
 
 For more detailed information on the timer functions, see the API sections on [timers](API.md#api-timers) and [timer references](API.md#timer-ref).
 
+![Screenshot](screenshot.png)
+
 ### Region Capture / Image Detection
 
 In this section, we're going to cover a powerful utility provided by Akkoro which allows us to capture specific parts of the screen, as well as locate things. Let's start simple...
