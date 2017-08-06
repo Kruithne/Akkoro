@@ -69,6 +69,9 @@ namespace Akkoro
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            // Remove keyboard hook.
+            InteropsManager.DisbandHooking();
+
             // Signal for all controls to drop their threads.
             foreach (Control control in uiFlow.Controls)
                 if (control is Control_FlowListing)

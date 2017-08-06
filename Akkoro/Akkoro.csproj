@@ -63,6 +63,7 @@
       <DependentUpon>Control_FlowListing.cs</DependentUpon>
     </Compile>
     <Compile Include="Internals\CursorJourney.cs" />
+    <Compile Include="Internals\HookThread.cs" />
     <Compile Include="Internals\KeyboardTyper.cs" />
     <Compile Include="Internals\KeyMap.cs" />
     <Compile Include="Internals\LuaCallback.cs" />

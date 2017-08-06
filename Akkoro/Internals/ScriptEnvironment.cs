@@ -16,12 +16,18 @@ namespace Akkoro
         private Control_FlowListing _control;
         private ConcurrentQueue<LuaCallback> _callbackPipe;
 
+        private ConcurrentQueue<int> _keyHookPipe;
+        private List<LuaFunction> _keyCallbacks;
+        private bool _hasHook;
+
         public bool IsActive { get; private set; }
 
         public ScriptEnvironment(Control_FlowListing control)
         {
             _control = control;
             _callbackPipe = new ConcurrentQueue<LuaCallback>();
+            _keyHookPipe = new ConcurrentQueue<int>();
+            _keyCallbacks = new List<LuaFunction>();
         }
 
         public void Start()
@@ -59,6 +65,13 @@ namespace Akkoro
             {
                 _control.SetStatusText("Stopping...");
                 _callbackPipe = new ConcurrentQueue<LuaCallback>();
+
+                _keyHookPipe = new ConcurrentQueue<int>();
+                _keyCallbacks.Clear();
+                if (_hasHook)
+                    InteropsManager.RemoveHookEnrivonment(this);
+
+
                 new Thread(Terminate).Start();
             }
         }
@@ -73,9 +86,16 @@ namespace Akkoro
                 // Process callbacks while the environment is active.
                 while (IsActive)
                 {
+                    // Dispatch any awaiting callbacks.
                     LuaCallback callback;
                     while (IsActive && _callbackPipe.TryDequeue(out callback))
                         callback.Chunk.Call(callback.Parameters);
+
+                    // Dispatch any awaiting key events.
+                    int key;
+                    while (IsActive && _keyHookPipe.TryDequeue(out key))
+                        foreach (LuaFunction keyCallback in _keyCallbacks)
+                            keyCallback.Call(key);
 
                     Thread.Sleep(1);
                 }
@@ -83,6 +103,17 @@ namespace Akkoro
             catch (LuaScriptException e)
             {
                 OnScriptError(e);
+            }
+        }
+
+        public void HookKey(LuaFunction callback)
+        {
+            _keyCallbacks.Add(callback);
+
+            if (!_hasHook)
+            {
+                InteropsManager.RegisterHookEnvironment(this);
+                _hasHook = true;
             }
         }
 
@@ -102,6 +133,15 @@ namespace Akkoro
             }
 
             _control.DisplayScriptDisabled();
+        }
+
+        public void QueueKey(int key)
+        {
+            // Ignore hook events if environment is inactive.
+            if (!IsActive)
+                return;
+
+            _keyHookPipe.Enqueue(key);
         }
 
         public void QueueCallback(LuaFunction chunk, params object[] param)

@@ -237,5 +237,10 @@ namespace Akkoro
 
             return new ScriptImage(img);
         }
+
+        public void Hook(LuaFunction chunk)
+        {
+            _env.HookKey(chunk);
+        }
     }
 }
