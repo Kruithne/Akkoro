@@ -88,6 +88,9 @@ namespace Akkoro
                 for (int y = 0; y < GetHeight(); y++)
                 {
                     Color pixel = GetColorAt(x, y);
+                    fX = x;
+                    fY = y;
+
                     if (threshold == 0f)
                     {
                         if (pixel == match)
