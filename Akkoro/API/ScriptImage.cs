@@ -77,7 +77,7 @@ namespace Akkoro
             return false;
         }
 
-        public bool LocateColour(double r, double g, double b, float threshold, out int fX, out int fY)
+        public bool LocateColor(double r, double g, double b, float threshold, out int fX, out int fY)
         {
             fX = -1;
             fY = -1;
