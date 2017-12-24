@@ -77,12 +77,12 @@ namespace Akkoro
             return false;
         }
 
-        public bool LocateColour(int r, int g, int b, float threshold, out int fX, out int fY)
+        public bool LocateColour(double r, double g, double b, float threshold, out int fX, out int fY)
         {
             fX = -1;
             fY = -1;
 
-            Color match = Color.FromArgb(r, g, b);
+            Color match = Color.FromArgb((int)r, (int)g, (int)b);
             for (int x = 0; x < GetWidth(); x++)
             {
                 for (int y = 0; y < GetHeight(); y++)
@@ -98,9 +98,9 @@ namespace Akkoro
                     }
                     else
                     {
-                        float proxR = Math.Abs(r - pixel.R) / 255;
-                        float proxG = Math.Abs(g - pixel.G) / 255;
-                        float proxB = Math.Abs(b - pixel.B) / 255;
+                        double proxR = Math.Abs(r - pixel.R) / 255;
+                        double proxG = Math.Abs(g - pixel.G) / 255;
+                        double proxB = Math.Abs(b - pixel.B) / 255;
 
                         if (proxR <= threshold && proxG <= threshold && proxB <= threshold)
                             return true;
