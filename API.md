@@ -14,6 +14,12 @@ Terminates and deactives the script.
 #### SetScriptName(`string` name)
 Set the name of this script, as seen on the script listing UI. By default, the filename of the script will be used unless this is called.
 
+#### Sleep(`number` delay)
+Force the script to sleep for the given `delay` (in milliseconds).
+
+### CopyToClipboard(`string` text)
+Copy the given `text` onto the computers clipboard.
+
 ## <a name="api-timers"></a> API: Timers
 
 #### Timer(`number` delay, `function` callback) : `userdata` timerRef
