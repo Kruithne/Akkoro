@@ -27,6 +27,11 @@ namespace Akkoro
             return _bitmap.Width;
         }
 
+        public int GetPixelCount()
+        {
+            return GetWidth() * GetHeight();
+        }
+
         public void Save(string path)
         {
             _bitmap.Save(path);
@@ -109,6 +114,23 @@ namespace Akkoro
             }
 
             return false;
+        }
+
+        public Color GetColorAverage()
+        {
+            int[] avg = new int[] { 0, 0, 0 };
+            for (int x = 0; x < GetWidth(); x++)
+            {
+                for (int y = 0; y < GetHeight(); y++)
+                {
+                    Color pixel = GetColorAt(x, y);
+                    avg[0] += pixel.R;
+                    avg[1] += pixel.G;
+                    avg[2] += pixel.B;
+                }
+            }
+
+            return Color.FromArgb(avg[0], avg[1], avg[2]);
         }
     }
 }
