@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Akkoro
 {
@@ -72,6 +73,37 @@ namespace Akkoro
                     if (firstPixel.A == 0 || GetColorAt(x, y) == firstPixel)
                         if (Match(x, y, image, out fX, out fY))
                             return true;
+
+            return false;
+        }
+
+        public bool LocateColour(int r, int g, int b, float threshold, out int fX, out int fY)
+        {
+            fX = -1;
+            fY = -1;
+
+            Color match = Color.FromArgb(r, g, b);
+            for (int x = 0; x < GetWidth(); x++)
+            {
+                for (int y = 0; y < GetHeight(); y++)
+                {
+                    Color pixel = GetColorAt(x, y);
+                    if (threshold == 0f)
+                    {
+                        if (pixel == match)
+                            return true;
+                    }
+                    else
+                    {
+                        float proxR = Math.Abs(r - pixel.R) / 255;
+                        float proxG = Math.Abs(g - pixel.G) / 255;
+                        float proxB = Math.Abs(b - pixel.B) / 255;
+
+                        if (proxR <= threshold && proxG <= threshold && proxB <= threshold)
+                            return true;
+                    }
+                }
+            }
 
             return false;
         }

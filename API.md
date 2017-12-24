@@ -172,6 +172,7 @@ Capture the specified region of the screen as an image. Returns a reference, det
 | GetWidth | None | `number` | Get the width of the image. |
 | GetSize | None | `number` width, `number` height | Get the width/height of the image |
 | Locate | [Image Reference](API.md#api-image-ref) | `bool` success, `number` x, `number` y | Locates the provided image ref inside of this image ref. |
+| LocateColour | `number` r, `number` g, `number` b, `float` threshold | `bool` success, `number` x, `number` y | Locate the given colour on the screen. |
 | Save | `string` path | None | Save the capture to a file. |
 
 ### <a name="api-process"></a> API: Processes
