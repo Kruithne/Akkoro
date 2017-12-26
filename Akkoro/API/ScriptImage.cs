@@ -130,7 +130,8 @@ namespace Akkoro
                 }
             }
 
-            return Color.FromArgb(avg[0], avg[1], avg[2]);
+            int pixelCount = GetPixelCount();
+            return Color.FromArgb(avg[0] / pixelCount, avg[1] / pixelCount, avg[2] / pixelCount);
         }
     }
 }
