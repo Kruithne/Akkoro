@@ -98,15 +98,58 @@ namespace Akkoro
 
         public bool Locate(ScriptImage image, out int fX, out int fY)
         {
+            return Locate(image, (int)ScanDirection.LEFT_TO_RIGHT, out fX, out fY);
+        }
+
+        public bool Locate(ScriptImage image, int scanDirection, out int fX, out int fY)
+        {
             fX = -1;
             fY = -1;
 
             Color firstPixel = image.GetColorAt(0, 0);
-            for (int x = 0; x < GetWidth(); x++)
-                for (int y = 0; y < GetHeight(); y++)
-                    if (firstPixel.A == 0 || GetColorAt(x, y) == firstPixel)
-                        if (Match(x, y, image, out fX, out fY))
-                            return true;
+            ScanDirection direction = (ScanDirection)scanDirection;
+            switch (direction)
+            {
+                case ScanDirection.LEFT_TO_RIGHT:
+                    for (int x = 0; x < GetWidth(); x++)
+                        for (int y = 0; y < GetHeight(); y++)
+                            if (Locate(firstPixel, x, y, image, out fX, out fY))
+                                return true;
+                    break;
+
+                case ScanDirection.RIGHT_TO_LEFT:
+                    for (int x = GetWidth(); x > 0; x--)
+                        for (int y = GetHeight(); y > 0; y--)
+                            if (Locate(firstPixel, x - 1, y - 1, image, out fX, out fY))
+                                return true;
+                    break;
+
+                case ScanDirection.TOP_TO_BOTTOM:
+                    for (int y = 0; y < GetHeight(); y++)
+                        for (int x = 0; x < GetWidth(); x++)
+                            if (Locate(firstPixel, x, y, image, out fX, out fY))
+                                return true;
+                    break;
+
+                case ScanDirection.BOTTOM_TO_TOP:
+                    for (int y = GetHeight(); y > 0; y--)
+                        for (int x = GetWidth(); x > 0; x--)
+                            if (Locate(firstPixel, x, y, image, out fX, out fY))
+                                return true;
+                    break;
+            }
+
+            return false;
+        }
+
+        private bool Locate(Color first, int x, int y, ScriptImage image, out int fX, out int fY)
+        {
+            fX = -1;
+            fY = -1;
+
+            if (first.A == 0 || GetColorAt(x, y) == first)
+                if (Match(x, y, image, out fX, out fY))
+                    return true;
 
             return false;
         }

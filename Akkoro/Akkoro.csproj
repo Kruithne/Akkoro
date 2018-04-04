@@ -70,6 +70,7 @@
     <Compile Include="Internals\InteropsManager.cs" />
     <Compile Include="Internals\MouseClickType.cs" />
     <Compile Include="API\ScriptScreen.cs" />
+    <Compile Include="Internals\ScanDirection.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
