@@ -67,6 +67,26 @@ namespace Akkoro
             return true;
         }
 
+        public bool Match(ScriptImage image)
+        {
+            if (GetWidth() != image.GetWidth())
+                return false;
+
+            if (GetHeight() != image.GetHeight())
+                return false;
+
+            for (int x = 0; x < GetWidth(); x++)
+            {
+                for (int y = 0; y < GetHeight(); y++)
+                {
+                    if (!image.GetColorAt(x, y).Equals(GetColorAt(x, y)))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool Locate(ScriptImage image, out int fX, out int fY)
         {
             fX = -1;
@@ -75,6 +95,21 @@ namespace Akkoro
             Color firstPixel = image.GetColorAt(0, 0);
             for (int x = 0; x < GetWidth(); x++)
                 for (int y = 0; y < GetHeight(); y++)
+                    if (firstPixel.A == 0 || GetColorAt(x, y) == firstPixel)
+                        if (Match(x, y, image, out fX, out fY))
+                            return true;
+
+            return false;
+        }
+
+        public bool LocateVertical(ScriptImage image, out int fX, out int fY)
+        {
+            fX = -1;
+            fY = -1;
+
+            Color firstPixel = image.GetColorAt(0, 0);
+            for (int y = 0; y < GetHeight(); y++)
+                for (int x = 0; x < GetWidth(); x++)
                     if (firstPixel.A == 0 || GetColorAt(x, y) == firstPixel)
                         if (Match(x, y, image, out fX, out fY))
                             return true;
