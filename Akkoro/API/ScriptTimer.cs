@@ -29,7 +29,7 @@ namespace Akkoro
             }
 
             // Invoke the callback in the environment.
-            _env.QueueCallback(_chunk);
+            _env.QueueCallback(_chunk, this);
 
             // If we're not repeating, stop the timer.
             if (!_repeating)

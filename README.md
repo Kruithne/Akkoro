@@ -143,17 +143,33 @@ With that example, the function will be called every one second, incrementing th
 
 ```Lua
 local count = 1;
-myTimer = Every(1000, function()
-    if count == 10 then
-        myTimer:Stop();
-    end
-
+local myFirstTimer = Every(1000, function()
     Status("Count: " .. count);
     count = count + 1;
 end);
+
+After(5000, function()
+    myFirstTimer:Stop();
+    Status("Stopped the timer.");
+end);
 ```
 
-Similar to the example before it, a timer is created that invokes the given function every one second. The difference here is that once the counter reaches ten, the timer is manually stopped.
+Similar to the example before it, a timer is created that invokes the given function every one second. The difference here is that we create another timer which uses the reference returned from the first one to stop it after 5 seconds pass.
+
+There are some situations where we might want to control the timer from inside the callback without having to store the reference somewhere. For this reason, the first parameter to all callbacks given to timers is a reference to the timer itself.
+
+```Lua
+local count = 1;
+Every(1000, function(self)
+    Status("Count: " .. count);
+    count = count + 1;
+
+    if count == 5 then
+        self:Stop();
+        Status("Stopped myself!");
+    end
+end);
+```
 
 It's not unlikely that we might want to create a timer that doesn't start straight away. To do this we can make use of the `Timer` function.
 

@@ -23,17 +23,17 @@ Copy the given `text` onto the computers clipboard.
 ## <a name="api-timers"></a> API: Timers
 
 #### Timer(`number` delay, `function` callback) : `userdata` timerRef
-Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created by this function do not start automatically.
+Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created by this function do not start automatically. The callback will be given the timer as the first parameter, allowing the callback to control its own timer.
 
 See [Timer Examples](README.md#examples-timers) for usage and [Timer Reference](#timer-ref) for details on the returned reference.
 
 #### After(`number` delay, `function` callback) : `userdata` timerRef
-Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created with this function will start automatically, and execute just once.
+Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created with this function will start automatically, and execute just once. The callback will be given the timer as the first parameter, allowing the callback to control its own timer.
 
 See [Timer Examples](README.md#examples-timers) for usage and [Timer Reference](#timer-ref) for details on the returned reference.
 
 #### Every(`number` delay, `function` callback) : `userdata` timerRef
-Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created with this function will start automatically, repeating until stopped.
+Creates a timer which will invoke the provided `callback` function in intervals of `delay` (in milliseconds). Timers created with this function will start automatically, repeating until stopped. The callback will be given the timer as the first parameter, allowing the callback to control its own timer.
 
 See [Timer Examples](README.md#examples-timers) for usage and [Timer Reference](#timer-ref) for details on the returned reference.
 
