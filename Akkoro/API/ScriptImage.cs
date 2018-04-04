@@ -12,9 +12,17 @@ namespace Akkoro
             _bitmap = image;
         }
 
-        public Color GetColorAt(int x, int y)
+        private Color GetColorAt(int x, int y)
         {
             return _bitmap.GetPixel(x, y);
+        }
+
+        public void GetColorAt(int x, int y, out int r, out int g, out int b)
+        {
+            Color color = GetColorAt(x, y);
+            r = color.R;
+            g = color.G;
+            b = color.B;
         }
 
         public int GetHeight()
@@ -151,7 +159,7 @@ namespace Akkoro
             return false;
         }
 
-        public Color GetColorAverage()
+        public void GetColorAverage(out int r, out int g, out int b)
         {
             int[] avg = new int[] { 0, 0, 0 };
             for (int x = 0; x < GetWidth(); x++)
@@ -166,7 +174,11 @@ namespace Akkoro
             }
 
             int pixelCount = GetPixelCount();
-            return Color.FromArgb(avg[0] / pixelCount, avg[1] / pixelCount, avg[2] / pixelCount);
+            Color averageColor = Color.FromArgb(avg[0] / pixelCount, avg[1] / pixelCount, avg[2] / pixelCount);
+
+            r = averageColor.R;
+            g = averageColor.G;
+            b = averageColor.B;
         }
     }
 }
