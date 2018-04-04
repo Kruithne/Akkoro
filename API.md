@@ -82,8 +82,8 @@ Sets the state of the given click-type to *up*. The `type` argument should be on
 
 ### <a name="api-keyboard"></a> API: Keyboard
 
-#### Hook(`function` callback)
-Provides the system with a function to callback every time keyboard input is detected. The callback function will be invoked with one parameter, `key`, which is the integer ID of the key pressed. Check out the [Keys document](KEYS.md) for a list of keys and their corrosponding integer IDs.
+#### HookKey(`number` key, `function` callback)
+Provides the system with a function to callback every time a specific key is pressed. If you wish to listen for all key presses, you can pass the `Key.ALL` constant as the first parameter and your callback will receive the numeric value of the key pressed as the first parameter. Check out the [Keys document](KEYS.md) for a list of keys and their corrosponding integer IDs.
 
 #### KeyDown(`string` ...)
 Signals for the provided keys to be pressed down. Keys must be provided as literals, which are listed in the [Keys document](KEYS.md).

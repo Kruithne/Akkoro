@@ -53,14 +53,19 @@ It's possible that after having started the cursor moving with `MoveCursor`, you
 Before we jump in to emulating keyboard input using scripts, here's a quick example on how we can capture keyboard input...
 
 ```Lua
-Hook(function(key)
-    if key == 27 then
-        Stop();
-    end
+HookKey(Key.ESCAPE, function()
+    Stop();
 end);
 ```
-The `Hook` function allows us to provide a callback which will recieve all keyboard events. The `key` parameter is the integer value of the key that was pressed, with `27` in the example being the Escape key, as detailed in the [Keys document](KEYS.md).
+The `HookKey` function allows us to provide a callback for a specific key press. In some cases we may wish to listen for all key presses, which can be done by making use of the `Key.ALL` constant.
 
+```Lua
+HookKey(Key.ALL, function(key)
+    Status("Key Pressed: " .. key);
+end);
+```
+
+The `key` parameter is the integer value of the key that was pressed, which we can then use as needed. Available constants for the `HookKey` function are detailed in the [Keys document](KEYS.md).
 
 Fundamentally, keyboard input boils down to two events, **press** and **release**. To emulate these, we can use the `KeyDown` and `KeyUp` calls.
 

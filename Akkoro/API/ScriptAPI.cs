@@ -240,9 +240,9 @@ namespace Akkoro
             return new ScriptImage(img);
         }
 
-        public void Hook(LuaFunction chunk)
+        public void HookKey(int key, LuaFunction chunk)
         {
-            _env.HookKey(chunk);
+            _env.HookKey(key, chunk);
         }
 
         public ScriptProcess Process()

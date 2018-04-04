@@ -17,7 +17,8 @@ namespace Akkoro
         private ConcurrentQueue<LuaCallback> _callbackPipe;
 
         private ConcurrentQueue<int> _keyHookPipe;
-        private List<LuaFunction> _keyCallbacks;
+        //private List<LuaFunction> _keyCallbacks;
+        private Dictionary<int, List<LuaFunction>> _keyCallbacks;
         private bool _hasHook;
 
         public bool IsActive { get; private set; }
@@ -27,7 +28,8 @@ namespace Akkoro
             _control = control;
             _callbackPipe = new ConcurrentQueue<LuaCallback>();
             _keyHookPipe = new ConcurrentQueue<int>();
-            _keyCallbacks = new List<LuaFunction>();
+            //_keyCallbacks = new List<LuaFunction>();
+            _keyCallbacks = new Dictionary<int, List<LuaFunction>>();
         }
 
         public void Start()
@@ -94,8 +96,15 @@ namespace Akkoro
                     // Dispatch any awaiting key events.
                     int key;
                     while (IsActive && _keyHookPipe.TryDequeue(out key))
-                        foreach (LuaFunction keyCallback in _keyCallbacks)
-                            keyCallback.Call(key);
+                    {
+                        if (_keyCallbacks.TryGetValue(0x0, out List<LuaFunction> globalCallbacks))
+                            foreach (LuaFunction globalCallback in globalCallbacks)
+                                globalCallback.Call(key);
+
+                        if (_keyCallbacks.TryGetValue(key, out List<LuaFunction> keyCallbacks))
+                            foreach (LuaFunction keyCallback in keyCallbacks)
+                                keyCallback.Call();
+                    }
 
                     Thread.Sleep(1);
                 }
@@ -106,9 +115,12 @@ namespace Akkoro
             }
         }
 
-        public void HookKey(LuaFunction callback)
+        public void HookKey(int key, LuaFunction callback)
         {
-            _keyCallbacks.Add(callback);
+            if (!_keyCallbacks.ContainsKey(key))
+                _keyCallbacks.Add(key, new List<LuaFunction>());
+
+            _keyCallbacks[key].Add(callback);
 
             if (!_hasHook)
             {
