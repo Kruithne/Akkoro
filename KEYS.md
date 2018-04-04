@@ -5,7 +5,7 @@ This file provides a list of all available keys that can be used with the keyboa
 While it is possible to emulate mouse clicks using this API, unless you have a specific reason for doing it this way, you should use the [Cursor API](API.md#api-cursor).
 
 - **Key**: Used with `MouseDown`, `MouseUp` and `TypeKeys`.
-- **Code**: User to identify key events with `Hook`.
+- **Code**: Used to identify key events with `Hook`.
 - **Description**: Human description of the key.
 
 | Key | Code | Description |
