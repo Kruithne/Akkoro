@@ -167,7 +167,7 @@ Capture the specified region of the screen as an image. Returns a reference, det
 
 | Function | Parameters | Return | Description |
 | -------- | ---------- | ------ | ----------- |
-| GetColorAt | None | `number` r, `number` g, `number` b | Get the RGB color value of the specified pixel. |
+| GetColorAt | None | `number` r, `number` g, `number` b, `number` a | Get the RGBA color value of the specified pixel. |
 | GetHeight | None | `number` | Get the height of the image. |
 | GetWidth | None | `number` | Get the width of the image. |
 | GetPixelCount | None | `number` | Total pixel count (width * height) |

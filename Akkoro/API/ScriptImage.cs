@@ -17,12 +17,13 @@ namespace Akkoro
             return _bitmap.GetPixel(x, y);
         }
 
-        public void GetColorAt(int x, int y, out int r, out int g, out int b)
+        public void GetColorAt(int x, int y, out int r, out int g, out int b, out int a)
         {
             Color color = GetColorAt(x, y);
             r = color.R;
             g = color.G;
             b = color.B;
+            a = color.A;
         }
 
         public int GetHeight()
