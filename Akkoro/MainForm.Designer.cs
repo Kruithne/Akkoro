@@ -32,14 +32,15 @@
             this.dialogOpenFile = new System.Windows.Forms.OpenFileDialog();
             this.uiBackground = new System.Windows.Forms.Panel();
             this.uiInnerBackdrop = new System.Windows.Forms.Panel();
-            this.uiHeader = new System.Windows.Forms.Panel();
-            this.uiHeaderDivide = new System.Windows.Forms.Panel();
+            this.uiEmptyPrompt = new System.Windows.Forms.Label();
             this.uiFlow = new System.Windows.Forms.FlowLayoutPanel();
+            this.uiHeader = new System.Windows.Forms.Panel();
             this.uiOpenButton = new System.Windows.Forms.Button();
             this.uiMinimizeButton = new System.Windows.Forms.Button();
             this.uiCloseButton = new System.Windows.Forms.Button();
             this.uiLogo = new System.Windows.Forms.PictureBox();
-            this.uiEmptyPrompt = new System.Windows.Forms.Label();
+            this.uiHeaderDivide = new System.Windows.Forms.Panel();
+            this.uiKillTip = new System.Windows.Forms.Label();
             this.uiBackground.SuspendLayout();
             this.uiInnerBackdrop.SuspendLayout();
             this.uiHeader.SuspendLayout();
@@ -81,11 +82,39 @@
             this.uiInnerBackdrop.Size = new System.Drawing.Size(724, 663);
             this.uiInnerBackdrop.TabIndex = 0;
             // 
+            // uiEmptyPrompt
+            // 
+            this.uiEmptyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiEmptyPrompt.BackColor = System.Drawing.Color.Transparent;
+            this.uiEmptyPrompt.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uiEmptyPrompt.ForeColor = System.Drawing.Color.White;
+            this.uiEmptyPrompt.Location = new System.Drawing.Point(-1, 107);
+            this.uiEmptyPrompt.Name = "uiEmptyPrompt";
+            this.uiEmptyPrompt.Size = new System.Drawing.Size(726, 76);
+            this.uiEmptyPrompt.TabIndex = 2;
+            this.uiEmptyPrompt.Text = "You haven\'t loaded any scripts yet. Click the button in the top-right to do that." +
+    "\r\nFor information on the API, check the GitHub project page!";
+            this.uiEmptyPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // uiFlow
+            // 
+            this.uiFlow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.uiFlow.Location = new System.Drawing.Point(21, 98);
+            this.uiFlow.Margin = new System.Windows.Forms.Padding(14);
+            this.uiFlow.Name = "uiFlow";
+            this.uiFlow.Size = new System.Drawing.Size(689, 544);
+            this.uiFlow.TabIndex = 1;
+            // 
             // uiHeader
             // 
             this.uiHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(41)))), ((int)(((byte)(69)))));
+            this.uiHeader.Controls.Add(this.uiKillTip);
             this.uiHeader.Controls.Add(this.uiOpenButton);
             this.uiHeader.Controls.Add(this.uiMinimizeButton);
             this.uiHeader.Controls.Add(this.uiCloseButton);
@@ -99,28 +128,6 @@
             this.uiHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.uiHeader_MouseDown);
             this.uiHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.uiHeader_MouseMove);
             this.uiHeader.MouseUp += new System.Windows.Forms.MouseEventHandler(this.uiHeader_MouseUp);
-            // 
-            // uiHeaderDivide
-            // 
-            this.uiHeaderDivide.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiHeaderDivide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(82)))), ((int)(((byte)(105)))));
-            this.uiHeaderDivide.Location = new System.Drawing.Point(-1, 80);
-            this.uiHeaderDivide.Name = "uiHeaderDivide";
-            this.uiHeaderDivide.Size = new System.Drawing.Size(725, 1);
-            this.uiHeaderDivide.TabIndex = 1;
-            // 
-            // uiFlow
-            // 
-            this.uiFlow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiFlow.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.uiFlow.Location = new System.Drawing.Point(21, 98);
-            this.uiFlow.Margin = new System.Windows.Forms.Padding(14);
-            this.uiFlow.Name = "uiFlow";
-            this.uiFlow.Size = new System.Drawing.Size(689, 544);
-            this.uiFlow.TabIndex = 1;
             // 
             // uiOpenButton
             // 
@@ -177,20 +184,29 @@
             this.uiLogo.MouseMove += new System.Windows.Forms.MouseEventHandler(this.uiHeader_MouseMove);
             this.uiLogo.MouseUp += new System.Windows.Forms.MouseEventHandler(this.uiHeader_MouseUp);
             // 
-            // uiEmptyPrompt
+            // uiHeaderDivide
             // 
-            this.uiEmptyPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.uiHeaderDivide.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.uiEmptyPrompt.BackColor = System.Drawing.Color.Transparent;
-            this.uiEmptyPrompt.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uiEmptyPrompt.ForeColor = System.Drawing.Color.White;
-            this.uiEmptyPrompt.Location = new System.Drawing.Point(-1, 107);
-            this.uiEmptyPrompt.Name = "uiEmptyPrompt";
-            this.uiEmptyPrompt.Size = new System.Drawing.Size(726, 76);
-            this.uiEmptyPrompt.TabIndex = 2;
-            this.uiEmptyPrompt.Text = "You haven\'t loaded any scripts yet. Click the button in the top-right to do that." +
-    "\r\nFor information on the API, check the GitHub project page!";
-            this.uiEmptyPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.uiHeaderDivide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(82)))), ((int)(((byte)(105)))));
+            this.uiHeaderDivide.Location = new System.Drawing.Point(-1, 80);
+            this.uiHeaderDivide.Name = "uiHeaderDivide";
+            this.uiHeaderDivide.Size = new System.Drawing.Size(725, 1);
+            this.uiHeaderDivide.TabIndex = 1;
+            // 
+            // uiKillTip
+            // 
+            this.uiKillTip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uiKillTip.BackColor = System.Drawing.Color.Transparent;
+            this.uiKillTip.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uiKillTip.ForeColor = System.Drawing.Color.White;
+            this.uiKillTip.Location = new System.Drawing.Point(262, 41);
+            this.uiKillTip.Name = "uiKillTip";
+            this.uiKillTip.Size = new System.Drawing.Size(425, 39);
+            this.uiKillTip.TabIndex = 2;
+            this.uiKillTip.Text = "Tip: Pressing F1 twice in quick succession will terminate all scripts";
+            this.uiKillTip.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -224,6 +240,7 @@
         private System.Windows.Forms.FlowLayoutPanel uiFlow;
         private System.Windows.Forms.Button uiOpenButton;
         private System.Windows.Forms.Label uiEmptyPrompt;
+        private System.Windows.Forms.Label uiKillTip;
     }
 }
 

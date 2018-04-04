@@ -18,7 +18,6 @@ namespace Akkoro
 
         private ConcurrentQueue<int> _keyHookPipe;
         private Dictionary<int, List<LuaFunction>> _keyCallbacks;
-        private bool _hasHook;
 
         public bool IsActive { get; private set; }
 
@@ -53,6 +52,9 @@ namespace Akkoro
 
             _control.DisplayScriptEnabled();
 
+            // Register for keyboard callbacks.
+            InteropsManager.RegisterHookEnvironment(this);
+
             _thread = new Thread(Run);
             _thread.Start();
         }
@@ -63,13 +65,12 @@ namespace Akkoro
 
             if (!safe)
             {
-                _control.SetStatusText("Stopping...");
+                SetStatus("Stopping...");
                 _callbackPipe = new ConcurrentQueue<LuaCallback>();
 
                 _keyHookPipe = new ConcurrentQueue<int>();
                 _keyCallbacks.Clear();
-                if (_hasHook)
-                    InteropsManager.RemoveHookEnrivonment(this);
+                InteropsManager.RemoveHookEnrivonment(this);
 
 
                 new Thread(Terminate).Start();
@@ -119,12 +120,6 @@ namespace Akkoro
                 _keyCallbacks.Add(key, new List<LuaFunction>());
 
             _keyCallbacks[key].Add(callback);
-
-            if (!_hasHook)
-            {
-                InteropsManager.RegisterHookEnvironment(this);
-                _hasHook = true;
-            }
         }
 
         public LuaTable CreateTable()
@@ -154,6 +149,11 @@ namespace Akkoro
             _keyHookPipe.Enqueue(key);
         }
 
+        public void SetStatus(string text)
+        {
+            _control.SetStatusText(text);
+        }
+
         public void QueueCallback(LuaFunction chunk, params object[] param)
         {
             // Prevent callbacks if this environment is inactive.
@@ -166,7 +166,7 @@ namespace Akkoro
         private void OnScriptError(LuaScriptException e)
         {
             Stop();
-            _control.SetStatusText("Error");
+            SetStatus("Stopped by error");
             MessageBox.Show(e.Message, "Akkoro Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }

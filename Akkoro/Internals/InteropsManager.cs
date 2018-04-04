@@ -60,13 +60,33 @@ namespace Akkoro
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        private static long killSwitchTime = 0;
+
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
+                bool dispatch = true;
                 int vkCode = Marshal.ReadInt32(lParam);
-                foreach (ScriptEnvironment env in _environments)
-                    env.QueueKey(vkCode);
+                if (vkCode == 0x70)
+                {
+                    long check = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    if (check - killSwitchTime < 1000)
+                    {
+                        dispatch = false;
+                        List<ScriptEnvironment> cache = new List<ScriptEnvironment>(_environments);
+                        foreach (ScriptEnvironment env in cache)
+                            env.Stop();
+                    }
+                    else
+                    {
+                        killSwitchTime = check;
+                    }
+                }
+                
+                if (dispatch)
+                    foreach (ScriptEnvironment env in _environments)
+                        env.QueueKey(vkCode);
             }
 
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
