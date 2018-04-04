@@ -68,17 +68,17 @@ Stops any cursor motion currently being caused by a `MoveCursor` call.
 #### Click(`number` type, `number` delay)
 Invoke a click at the current cursor location. Both arguments to this function are optional, and if called without them will produce a simple left-click.
 
-The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
+The `type` argument should be one of `Mouse.LEFT`, `Mouse.RIGHT` or `Mouse.MIDDLE`, three global constants available in the script environment. If omitted, `Mouse.LEFT` will be used.
 
 Using the `delay` argument, the period at which the cursor is considered *down* during the click can be specified. There will be no delay if this argument is omitted.
 
 It's important to note that this call is not asynchronous and will block the script-thread if a delay is provided. If you need to continue execution, consider using `MouseDown`/`MouseUp` instead.
 
 #### MouseDown(`number` type)
-Sets the state of the given click-type to *down*. The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
+Sets the state of the given click-type to *down*. The `type` argument should be one of `Mouse.LEFT`, `Mouse.RIGHT` or `Mouse.MIDDLE`, three global constants available in the script environment. If omitted, `Mouse.LEFT` will be used.
 
 #### MouseUp(`number` type)
-Sets the state of the given click-type to *up*. The `type` argument should be one of `MOUSE_LEFT`, `MOUSE_RIGHT` or `MOUSE_MIDDLE`, three global constants available in the script environment. If omitted, `MOUSE_LEFT` will be used.
+Sets the state of the given click-type to *up*. The `type` argument should be one of `Mouse.LEFT`, `Mouse.RIGHT` or `Mouse.MIDDLE`, three global constants available in the script environment. If omitted, `Mouse.LEFT` will be used.
 
 ### <a name="api-keyboard"></a> API: Keyboard
 

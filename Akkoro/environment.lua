@@ -5,6 +5,8 @@ print = nil;
 import = nil;
 
 -- Define constants.
-MOUSE_LEFT = 1;
-MOUSE_RIGHT = 2;
-MOUSE_MIDDLE = 3;
+Mouse = {
+	LEFT = 1,
+	RIGHT = 2,
+	MIDDLE = 3
+};
