@@ -17,7 +17,6 @@ namespace Akkoro
         private ConcurrentQueue<LuaCallback> _callbackPipe;
 
         private ConcurrentQueue<int> _keyHookPipe;
-        //private List<LuaFunction> _keyCallbacks;
         private Dictionary<int, List<LuaFunction>> _keyCallbacks;
         private bool _hasHook;
 
@@ -28,7 +27,6 @@ namespace Akkoro
             _control = control;
             _callbackPipe = new ConcurrentQueue<LuaCallback>();
             _keyHookPipe = new ConcurrentQueue<int>();
-            //_keyCallbacks = new List<LuaFunction>();
             _keyCallbacks = new Dictionary<int, List<LuaFunction>>();
         }
 
