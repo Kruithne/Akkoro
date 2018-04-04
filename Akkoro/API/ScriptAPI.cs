@@ -228,7 +228,9 @@ namespace Akkoro
 
         public ScriptImage LoadImage(string path)
         {
-            return new ScriptImage(new Bitmap(path));
+            byte[] bytes = File.ReadAllBytes(path);
+            MemoryStream stream = new MemoryStream(bytes);
+            return new ScriptImage(new Bitmap(stream));
         }
 
         public ScriptImage Capture(int x, int y, int width, int height)
